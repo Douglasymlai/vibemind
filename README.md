@@ -72,29 +72,6 @@ This aligns with emerging trends in AI research around prompt structuring, conte
    - Generate optimized prompts for better AI output
 
 
-## 📁 Project Structure
-
-```
-vibe-mind/
-├── profiles/                           # 📁 Analysis profiles (JSON files)
-│   ├── content_creator.json           #   Content creation profile
-│   ├── technical_analyst.json         #   Technical analysis profile
-│   ├── product_designer.json          #   Design analysis profile
-│   ├── business_analyst.json          #   Business analysis profile
-│   └── ... (custom profiles)          #   User-created profiles
-├── reports/                            # 📊 Generated analysis reports
-│   ├── image_analysis_report_*.md     #   Full analysis reports
-│   ├── summarized_analysis_report_*.md #   Condensed reports
-│   └── analysis_result_*.json         #   Raw analysis data
-├── chat_agent_with_image_analysis.py  # Core image analysis engine
-├── vibe_mind.py                       # Interactive profile-based analysis
-├── quick_start.py                     # Simple demo script
-├── palantir.png                       # Sample dashboard image
-├── requirements.txt                   # Python dependencies
-├── config_example.py                  # Configuration example
-└── README.md                          # This file
-```
-
 ## 🎯 Usage Examples
 
 ### Simple Analysis
@@ -177,15 +154,6 @@ OPTIMIZATION_LEVEL=balanced  # or speed, quality
 
 ## 🎯 Vibe-Coding Workflows
 
-### 🏭 Pre-Built Workflows
-
-| Workflow | Target Platform | Optimization Focus | Output Format |
-|----------|----------------|--------------------|--------------|
-| **🎨 UI Component** | V0.dev, Shadcn/ui | Component structure, styling, props | React component prompt |
-| **🔧 Technical Analysis** | General coding AI | Architecture, patterns, implementation | Technical specification |
-| **🎭 Design System** | Figma → Code tools | Design tokens, patterns, consistency | Design system prompt |
-| **💼 Business Logic** | AI coding assistants | Requirements, user stories, workflows | Functional specification |
-
 ### 🛠️ Custom Workflow Creation
 
 Create workflows optimized for your specific AI vibe-coding platform:
@@ -256,11 +224,6 @@ Have ideas? Want to collaborate or experiment?
 
 **Open an issue or submit a pull request — we're open to co-building.**
 
-We're particularly interested in:
-- New AI platform integrations (V0, Magic Pattern, Lovable, etc.)
-- Advanced multimodal analysis techniques
-- Context engineering and prompt optimization research
-- Real-world vibe-coding workflow examples
 
 ## 🎨 Example Use Cases
 
