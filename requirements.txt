@@ -1,0 +1,5 @@
+camel-ai[all]
+python-dotenv
+requests
+Pillow
+urllib3
