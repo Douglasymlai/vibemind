@@ -5,8 +5,8 @@ Quick Start Demo for Image Analysis
 Simple demo script showing how to use the image analysis tools.
 """
 
-from chat_agent_with_image_analysis import ImageAnalysisChatAgent
-from vibe_mind import StructuredImageAnalyzer
+from backend.chat_agent_with_image_analysis import ImageAnalysisChatAgent
+from backend.vibe_mind import StructuredImageAnalyzer
 
 
 def simple_analysis_demo():

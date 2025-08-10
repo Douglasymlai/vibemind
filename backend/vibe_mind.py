@@ -11,7 +11,7 @@ import json
 import os
 from datetime import datetime
 from typing import Dict, Any, Optional, List
-from chat_agent_with_image_analysis import ImageAnalysisChatAgent
+from backend.chat_agent_with_image_analysis import ImageAnalysisChatAgent
 
 
 class UserProfile:
