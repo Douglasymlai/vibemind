@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Mind</title>
+    <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+    <div class="sidepanel-container">
+        <!-- Collapsible Header -->
+        <div class="header" id="panelHeader">
+            <div class="header-main">
+                <div class="logo">
+                    <img src="icons/icon-32.png" alt="Vibe Mind" width="24" height="24">
+                    <h1>Vibe Mind</h1>
+                </div>
+                <button class="collapse-btn" id="collapseBtn" title="Collapse/Expand Panel">
+                    <span class="collapse-icon">◀</span>
+                </button>
+            </div>
+            <div class="api-status" id="apiStatus">
+                <span class="status-indicator" id="statusIndicator"></span>
+                <span id="statusText">No API Key</span>
+            </div>
+        </div>
+
+        <!-- Collapsible Content -->
+        <div class="content" id="panelContent">
+            <!-- API Key Setup Section -->
+            <div class="section" id="apiKeySection">
+                <div class="section-header">
+                    <h3>OpenAI API Key Setup</h3>
+                </div>
+                <div class="section-content">
+                    <div class="input-group">
+                        <input 
+                            type="password" 
+                            id="apiKeyInput" 
+                            placeholder="sk-..." 
+                            class="api-key-input"
+                        >
+                        <button id="toggleApiKey" class="toggle-btn" title="Show/Hide API Key">👁️</button>
+                    </div>
+                    <button id="saveApiKey" class="btn btn-primary">Save & Validate</button>
+                    <div class="help-text">
+                        <small>Get your API key from <a href="https://platform.openai.com" target="_blank">platform.openai.com</a></small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Features Section -->
+            <div class="section" id="mainSection" style="display: none;">
+                <div class="section-header">
+                    <h3>AI Tools</h3>
+                    <button class="section-toggle" data-target="mainFeatures">−</button>
+                </div>
+                <div class="section-content" id="mainFeatures">
+                    <div class="feature-grid">
+                        <button id="enhancePrompt" class="feature-btn">
+                            <div class="feature-icon">✨</div>
+                            <div class="feature-text">
+                                <div class="feature-title">Enhance Prompt</div>
+                                <div class="feature-desc">AI-powered prompt enhancement</div>
+                            </div>
+                        </button>
+                        
+                        <button id="analyzeImage" class="feature-btn">
+                            <div class="feature-icon">🖼️</div>
+                            <div class="feature-text">
+                                <div class="feature-title">Analyze Image</div>
+                                <div class="feature-desc">Extract design insights from images</div>
+                            </div>
+                        </button>
+                        
+                        <button id="openFullApp" class="feature-btn">
+                            <div class="feature-icon">🚀</div>
+                            <div class="feature-text">
+                                <div class="feature-title">Open Full App</div>
+                                <div class="feature-desc">Access all features</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Section -->
+            <div class="section" id="quickActionsSection" style="display: none;">
+                <div class="section-header">
+                    <h3>Quick Actions</h3>
+                    <button class="section-toggle" data-target="quickActions">−</button>
+                </div>
+                <div class="section-content" id="quickActions">
+                    <button id="copyToClipboard" class="btn btn-secondary" disabled>
+                        📋 Copy Last Result
+                    </button>
+                    <button id="openSettings" class="btn btn-secondary">
+                        ⚙️ Settings
+                    </button>
+                    <button id="clearCache" class="btn btn-secondary">
+                        🗑️ Clear Cache
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Results Section -->
+            <div class="section" id="recentResultsSection" style="display: none;">
+                <div class="section-header">
+                    <h3>Recent Results</h3>
+                    <button class="section-toggle" data-target="recentResults">+</button>
+                </div>
+                <div class="section-content collapsed" id="recentResults">
+                    <div class="recent-results-list" id="recentResultsList">
+                        <p class="no-results">No recent results</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="section loading-section" id="loadingSection" style="display: none;">
+                <div class="loading-content">
+                    <div class="loading-spinner"></div>
+                    <p>Processing your request...</p>
+                    <div class="loading-progress">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div class="section error-section" id="errorSection" style="display: none;">
+                <div class="error-content">
+                    <div class="error-icon">⚠️</div>
+                    <p id="errorMessage">Something went wrong</p>
+                    <button id="retryBtn" class="btn btn-primary">Try Again</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer" id="panelFooter">
+            <div class="status-info">
+                <span id="connectionStatus">Checking connection...</span>
+            </div>
+            <div class="resize-handle" id="resizeHandle" title="Drag to resize panel"></div>
+        </div>
+    </div>
+
+    <script src="sidepanel.js"></script>
+</body>
+</html>

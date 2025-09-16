@@ -12,7 +12,7 @@
   "template_mapping": {
     "analysis_1": "layout_analysis",
     "analysis_2": "design_system_analysis",
-    "analysis_3": "functionality_analysis",
+    "analysis_3": "functionality_analysis", 
     "analysis_4": "interaction_patterns_analysis",
     "analysis_5": "generated_prompt"
   },

@@ -16,7 +16,6 @@ load_dotenv()
 from PIL import Image
 
 from camel.agents import ChatAgent
-from camel.configs import ChatGPTConfig
 from camel.messages import BaseMessage
 from camel.models import ModelFactory
 from camel.types import ModelPlatformType, ModelType
@@ -35,7 +34,8 @@ class ImageAnalysisToolkit:
         self.timeout = timeout or 15
         self.model = model or ModelFactory.create(
             model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O_MINI,
+            model_type=ModelType.GPT_4O,
+            model_config_dict={}
         )
     
     def _load_image(self, image_path: str) -> Image.Image:
@@ -94,12 +94,11 @@ class ImageAnalysisChatAgent:
     
     def __init__(self, temperature: float = 0.0):
         """Initialize the agent."""
-        # Create model
-        model_config = ChatGPTConfig(temperature=temperature).as_dict()
+        # Create model - use simpler approach that's more compatible
         self.model = ModelFactory.create(
             model_platform=ModelPlatformType.OPENAI,
-            model_type=ModelType.GPT_4O_MINI,
-            model_config_dict=model_config,
+            model_type=ModelType.GPT_4O,
+            model_config_dict={'temperature': temperature}
         )
         
         # Initialize toolkit

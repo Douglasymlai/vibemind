@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Extension API</title>
+</head>
+<body>
+    <h1>Test Extension API Connection</h1>
+    <button onclick="testHealth()">Test Health Endpoint</button>
+    <button onclick="testImageUpload()">Test Image Upload</button>
+    <div id="results"></div>
+
+    <script>
+        async function testHealth() {
+            const results = document.getElementById('results');
+            try {
+                const response = await fetch('http://localhost:8000/api/health');
+                const data = await response.json();
+                results.innerHTML = '<h3>Health Check Success:</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                results.innerHTML = '<h3>Health Check Error:</h3><pre>' + error.message + '</pre>';
+            }
+        }
+
+        async function testImageUpload() {
+            const results = document.getElementById('results');
+            try {
+                // Create a simple test image (1x1 pixel PNG)
+                const canvas = document.createElement('canvas');
+                canvas.width = 1;
+                canvas.height = 1;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = 'red';
+                ctx.fillRect(0, 0, 1, 1);
+                
+                canvas.toBlob(async (blob) => {
+                    const formData = new FormData();
+                    formData.append('file', blob, 'test.png');
+                    formData.append('message', 'Test image analysis');
+                    formData.append('profile_key', 'product_designer');
+                    formData.append('api_key', 'test-key');
+
+                    try {
+                        const response = await fetch('http://localhost:8000/api/analyze-upload', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        
+                        const data = await response.json();
+                        results.innerHTML = '<h3>Image Upload Success:</h3><pre>' + JSON.stringify(data, null, 2).substring(0, 500) + '...</pre>';
+                    } catch (error) {
+                        results.innerHTML = '<h3>Image Upload Error:</h3><pre>' + error.message + '</pre>';
+                    }
+                });
+            } catch (error) {
+                results.innerHTML = '<h3>Image Upload Error:</h3><pre>' + error.message + '</pre>';
+            }
+        }
+    </script>
+</body>
+</html>

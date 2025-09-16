@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vibe Mind Offscreen</title>
+</head>
+<body>
+    <script>
+        // Handle clipboard operations for service worker
+        chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+            if (message.type === 'copy-to-clipboard') {
+                navigator.clipboard.writeText(message.text).then(() => {
+                    sendResponse({ success: true });
+                }).catch(error => {
+                    sendResponse({ success: false, error: error.message });
+                });
+                return true;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -14,7 +14,8 @@
     "analysis_2": "flow_mapping",
     "analysis_3": "prototype_design",
     "analysis_4": "usability_iteration",
-    "analysis_5": "analytics_loop"
+    "analysis_5": "analytics_loop",
+    "compliance_notes": "user_needs"
   },
   "summary_text": "Research‑grounded flows designed and tested with a trust‑first approach; prototype UI with both security cues and progressive disclosure, backed by set KPIs for continuous optimization."
 }

@@ -14,7 +14,9 @@
     "analysis_2": "emotional_loop_mapping",
     "analysis_3": "ui_mapping",
     "analysis_4": "playtest_summary",
-    "analysis_5": "telemetry_and_metrics"
+    "analysis_5": "telemetry_and_metrics",
+    "signal_priority": "ui_mapping",
+    "prototype_details": "ui_mapping"
   },
   "summary_text": "Emotion‑driven interface design refined continuously via structured playtesting and analytics to deliver intuitive, engaging HUDs and immersive UI flows."
 }

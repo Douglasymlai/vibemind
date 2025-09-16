@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './global.css';
 import { Textarea } from './components/ui/textarea';
+import { Button } from './components/ui/button';
 import InputCard from './components/inputcard';
+import ApiKeyDialog from './components/ApiKeyDialog';
+import ImageCacheManager from './components/ImageCacheManager';
+import { Key, Settings, HardDrive } from 'lucide-react';
 
 function App() {
   const [showEnhanceButton, setShowEnhanceButton] = useState(false);
@@ -9,7 +13,21 @@ function App() {
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
   const [isHoveringCard, setIsHoveringCard] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
+  const [showApiKeyDialog, setShowApiKeyDialog] = useState(false);
+  const [showCacheManager, setShowCacheManager] = useState(false);
+  const [hasApiKey, setHasApiKey] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Check for API key on component mount
+  useEffect(() => {
+    const apiKey = localStorage.getItem('openai_api_key');
+    setHasApiKey(!!apiKey);
+    
+    // Show API key dialog if no key is found
+    if (!apiKey) {
+      setShowApiKeyDialog(true);
+    }
+  }, []);
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -65,8 +83,47 @@ function App() {
     setTimeout(() => updateCursorPosition(), 10);
   };
 
+  const handleApiKeySet = (apiKey: string) => {
+    setHasApiKey(true);
+    console.log('API key set successfully');
+  };
+
+  const handleOpenApiKeyDialog = () => {
+    setShowApiKeyDialog(true);
+  };
+
   return (
     <div className="App flex flex-col items-center justify-center h-screen relative">
+      {/* API Key Status & Settings */}
+      <div className="absolute top-4 right-4 flex items-center gap-2">
+        <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs ${
+          hasApiKey 
+            ? 'bg-green-100 text-green-700 border border-green-200' 
+            : 'bg-red-100 text-red-700 border border-red-200'
+        }`}>
+          <Key className="w-3 h-3" />
+          {hasApiKey ? 'API Key Set' : 'No API Key'}
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowCacheManager(true)}
+          className="h-8 w-8 p-0"
+          title="Image Cache Manager"
+        >
+          <HardDrive className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleOpenApiKeyDialog}
+          className="h-8 w-8 p-0"
+          title="API Key Settings"
+        >
+          <Settings className="w-4 h-4" />
+        </Button>
+      </div>
+
       <Textarea 
         ref={textareaRef}
         className="w-[500px] h-[200px] bg-gray-50 rounded-lg border border-gray-200 p-4"
@@ -100,6 +157,19 @@ function App() {
           <InputCard textareaValue={textareaValue} />
         </div>
       )}
+
+      {/* API Key Dialog */}
+      <ApiKeyDialog
+        open={showApiKeyDialog}
+        onOpenChange={setShowApiKeyDialog}
+        onApiKeySet={handleApiKeySet}
+      />
+
+      {/* Image Cache Manager */}
+      <ImageCacheManager
+        open={showCacheManager}
+        onOpenChange={setShowCacheManager}
+      />
     </div>
   );
 }

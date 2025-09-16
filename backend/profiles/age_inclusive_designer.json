@@ -14,7 +14,8 @@
     "analysis_2": "codesign_session_summary",
     "analysis_3": "interface_guidelines",
     "analysis_4": "usability_insights",
-    "analysis_5": "accessibility_and_customisation"
+    "analysis_5": "accessibility_and_customisation",
+    "accessibility_notes": "accessibility_and_customisation"
   },
   "summary_text": "Empathy‑based design with seniors, guided by inclusive usability principles and customizable interfaces, validated through real user feedback and accessibility KPIs."
 }
