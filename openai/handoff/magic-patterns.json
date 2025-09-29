@@ -1,0 +1,305 @@
+{
+  "platform": "magic-patterns",
+  "platform_name": "Magic Patterns",
+  "description": "Design system-focused handoff configuration for Magic Patterns emphasizing visual specifications and brand consistency",
+  "strategy": {
+    "focus": "design system + visual specifications + brand consistency",
+    "keywords": ["pixel values", "color codes", "font sizes", "gradients", "shadows", "border radius", "spacing", "grid", "glassmorphism", "neumorphism", "Material Design", "Human Interface"],
+    "approach": "Style layer analysis, focusing on visual design specifications and brand consistency"
+  },
+  
+  "prompt_templates": {
+    "base_template": "Based on ${design_language}, create ${component_type} using ${aesthetic_style} style, color scheme: ${color_palette} (${color_values}), typography: ${font_specifications}, layout using ${layout_grid}, following ${spacing_system} spacing system",
+    
+    "design_system_template": "Based on ${design_language}, create ${page_type} interface following ${grid_system}.\n\nDesign Specifications:\n- Primary color: ${primary_color}, Secondary colors: ${secondary_colors}\n- Background: ${background_colors}\n- Typography hierarchy: ${typography_hierarchy}\n- Border radius: ${border_radius_system}\n- Shadows: ${shadow_system}\n- Spacing: ${spacing_specifications}\n\nComponent Styles:\n${component_styles}",
+    
+    "responsive_template": "Based on ${design_system}, create responsive ${interface_type}:\n- Layout grid: ${responsive_grid}\n- Breakpoint rules: ${breakpoint_rules}\n- Component adaptation: ${component_adaptation}\n- Typography scaling: ${typography_scaling}\n- Spacing adjustment: ${spacing_adjustment}",
+    
+    "component_template": "Design ${component_name} component specifications:\n\nVisual Styles:\n${visual_specifications}\n\nState Design:\n${state_variations}\n\nResponsive Behavior:\n${responsive_behavior}\n\nAnimation Effects:\n${animation_specifications}"
+  },
+  
+  "parameters": {
+    "high_priority": {
+      "design_language": ["Material Design", "Human Interface Guidelines", "Fluent Design", "Atlassian Design", "Carbon Design", "Custom"],
+      "aesthetic_style": ["Minimalism", "Glassmorphism", "Neumorphism", "Neo-Brutalism", "Flat Design", "Modern"],
+      "color_palette": ["monochrome", "analogous", "complementary", "triadic", "warm", "cool", "vibrant"],
+      "layout_grid": ["12-column", "flexbox", "css-grid", "custom-system"]
+    },
+    
+    "medium_priority": {
+      "brand_personality": ["professional", "friendly", "bold", "elegant", "playful", "trustworthy", "innovative"],
+      "typography_system": ["scale-ratio", "font-pairing", "hierarchy", "readable"],
+      "spacing_system": ["4px", "8px", "12px", "16px"],
+      "component_library": ["atomic", "molecular", "organism", "template"]
+    },
+    
+    "low_priority": {
+      "visual_hierarchy": ["primary", "secondary", "tertiary", "utility"],
+      "interaction_patterns": ["hover", "click", "drag", "swipe", "gesture"],
+      "animation_timing": ["duration", "easing", "delay", "iteration"],
+      "css_methodology": ["BEM", "OOCSS", "SMACSS", "Tailwind-utility"]
+    },
+    
+    "magic_patterns_specific": {
+      "color_values": ["hex-codes", "hsl-values", "css-variables", "design-tokens"],
+      "font_specifications": ["family", "weight", "size", "line-height", "letter-spacing"],
+      "border_system": ["width", "style", "radius", "color", "gradients"],
+      "shadow_system": ["elevation", "blur", "spread", "color", "direction"],
+      "responsive_breakpoints": ["mobile-320", "tablet-768", "desktop-1024", "wide-1440"]
+    }
+  },
+  
+  "design_tokens": {
+    "color_system": {
+      "primary": {
+        "50": "#eff6ff",
+        "100": "#dbeafe", 
+        "200": "#bfdbfe",
+        "300": "#93c5fd",
+        "400": "#60a5fa",
+        "500": "#3b82f6",
+        "600": "#2563eb",
+        "700": "#1d4ed8",
+        "800": "#1e40af",
+        "900": "#1e3a8a"
+      },
+      "neutral": {
+        "0": "#ffffff",
+        "50": "#f9fafb",
+        "100": "#f3f4f6",
+        "200": "#e5e7eb",
+        "300": "#d1d5db",
+        "400": "#9ca3af",
+        "500": "#6b7280",
+        "600": "#4b5563",
+        "700": "#374151",
+        "800": "#1f2937",
+        "900": "#111827"
+      }
+    },
+    
+    "typography": {
+      "font_families": {
+        "sans": ["Inter", "system-ui", "sans-serif"],
+        "serif": ["Merriweather", "Georgia", "serif"],
+        "mono": ["JetBrains Mono", "Monaco", "monospace"]
+      },
+      "font_sizes": {
+        "xs": "12px",
+        "sm": "14px", 
+        "base": "16px",
+        "lg": "18px",
+        "xl": "20px",
+        "2xl": "24px",
+        "3xl": "30px",
+        "4xl": "36px"
+      },
+      "line_heights": {
+        "tight": "1.25",
+        "normal": "1.5",
+        "relaxed": "1.75"
+      }
+    },
+    
+    "spacing": {
+      "scale": ["2px", "4px", "8px", "12px", "16px", "20px", "24px", "32px", "40px", "48px", "64px"],
+      "component_padding": "16px",
+      "section_margin": "24px",
+      "grid_gap": "20px"
+    },
+    
+    "borders": {
+      "radius": {
+        "none": "0px",
+        "sm": "2px",
+        "md": "6px", 
+        "lg": "8px",
+        "xl": "12px",
+        "full": "9999px"
+      },
+      "width": ["1px", "2px", "4px"],
+      "style": ["solid", "dashed", "dotted"]
+    },
+    
+    "shadows": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "base": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+    }
+  },
+  
+  "scenarios": {
+    "enterprise_dashboard": {
+      "design_language": "Material Design",
+      "brand_personality": "professional",
+      "color_palette": "monochrome with accent",
+      "typography_system": "corporate hierarchy",
+      "spacing_system": "8px grid",
+      "prompt": "Based on modern enterprise design language, create data dashboard interface following 8px grid system.\n\nDesign Specifications:\n- Primary color: #2563EB (blue), Secondary color: #64748B (gray)\n- Background: dark theme #0F172A, card background #1E293B\n- Typography hierarchy: heading 24px/bold, values 32px/extra-bold, description 14px/regular\n- Border radius: cards 12px, buttons 8px, icons 4px\n- Shadows: cards use box-shadow: 0 4px 6px rgba(0,0,0,0.1)\n- Spacing: component spacing 24px, content padding 16px, grid gap 20px\n\nComponent Styles:\n- Statistics cards: white/dark gray gradient background, left colored accent bar\n- Charts: line thickness 2px, data points 6px circles\n- Navigation: selected state uses primary color background, border radius 6px\n- Icons: 24px, using Lucide icon library style"
+    },
+    
+    "ecommerce_modern": {
+      "aesthetic_style": "Minimalism",
+      "brand_personality": "trustworthy",
+      "color_palette": "warm with CTA accent",
+      "interaction_patterns": ["hover-preview", "quick-add"],
+      "animation_timing": "subtle and fast",
+      "prompt": "Based on modern e-commerce design system, create product grid interface:\n- Use CSS Grid layout, desktop 3 columns, tablet 2 columns, mobile 1 column\n- Card design: white background, border radius 8px, border 1px #E5E7EB\n- Product images: aspect-ratio 1:1, object-fit cover\n- Price typography: Semibold 18px, discounted price with strikethrough + red color\n- Buttons: primary color #DC2626, hover darker #B91C1C, border radius 6px\n- Spacing: card spacing 20px, content padding 16px\n- Hover state: transform: translateY(-2px) + shadow elevation"
+    },
+    
+    "social_glassmorphism": {
+      "aesthetic_style": "Glassmorphism",
+      "brand_personality": "friendly",
+      "color_palette": "vibrant gradients",
+      "interaction_patterns": ["swipe", "pull-refresh", "infinite-scroll"],
+      "mobile_experience": "touch-optimized",
+      "prompt": "Based on glassmorphism style, design social media interface:\n\nVisual Specifications:\n- Background: gradient linear-gradient(135deg, #667eea 0%, #764ba2 100%)\n- Cards: backdrop-filter: blur(20px), background rgba(255,255,255,0.1)\n- Borders: 1px solid rgba(255,255,255,0.2)\n- Border radius: 16px uniform radius\n- Shadows: 0 8px 32px rgba(31, 38, 135, 0.37)\n\nComponent Design:\n- Feed cards: semi-transparent white background with blur effect\n- Buttons: gradient background + glassmorphism texture\n- Avatars: circular + rainbow border gradient\n- Icons: 24px, white semi-transparent\n- Typography: Inter, white/semi-transparent hierarchy"
+    }
+  },
+  
+  "component_specifications": {
+    "button": {
+      "variants": {
+        "primary": {
+          "background": "var(--color-primary-600)",
+          "color": "white",
+          "border": "none",
+          "padding": "12px 24px",
+          "border_radius": "8px",
+          "font_weight": "600",
+          "hover": "background: var(--color-primary-700)"
+        },
+        "secondary": {
+          "background": "transparent",
+          "color": "var(--color-primary-600)",
+          "border": "1px solid var(--color-primary-600)",
+          "padding": "12px 24px",
+          "border_radius": "8px",
+          "hover": "background: var(--color-primary-50)"
+        }
+      }
+    },
+    
+    "card": {
+      "base": {
+        "background": "white",
+        "border": "1px solid var(--color-neutral-200)",
+        "border_radius": "12px",
+        "padding": "24px",
+        "box_shadow": "var(--shadow-base)"
+      },
+      "hover": {
+        "transform": "translateY(-2px)",
+        "box_shadow": "var(--shadow-lg)",
+        "transition": "all 0.2s ease"
+      }
+    },
+    
+    "form_input": {
+      "base": {
+        "border": "1px solid var(--color-neutral-300)",
+        "border_radius": "6px",
+        "padding": "12px 16px",
+        "font_size": "16px",
+        "background": "white"
+      },
+      "focus": {
+        "border_color": "var(--color-primary-500)",
+        "box_shadow": "0 0 0 3px rgba(59, 130, 246, 0.1)",
+        "outline": "none"
+      }
+    }
+  },
+  
+  "responsive_specifications": {
+    "breakpoints": {
+      "mobile": "320px",
+      "tablet": "768px", 
+      "desktop": "1024px",
+      "wide": "1440px"
+    },
+    
+    "grid_system": {
+      "mobile": "1fr",
+      "tablet": "repeat(2, 1fr)",
+      "desktop": "repeat(3, 1fr)",
+      "wide": "repeat(4, 1fr)"
+    },
+    
+    "typography_scaling": {
+      "mobile": {
+        "h1": "24px",
+        "h2": "20px",
+        "body": "16px"
+      },
+      "desktop": {
+        "h1": "32px",
+        "h2": "24px", 
+        "body": "16px"
+      }
+    },
+    
+    "spacing_scaling": {
+      "mobile": "16px base spacing",
+      "tablet": "20px base spacing",
+      "desktop": "24px base spacing"
+    }
+  },
+  
+  "animation_library": {
+    "transitions": {
+      "fast": "0.15s ease",
+      "normal": "0.2s ease",
+      "slow": "0.3s ease"
+    },
+    
+    "easings": {
+      "ease_in_out": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "ease_out": "cubic-bezier(0, 0, 0.2, 1)",
+      "bounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+    },
+    
+    "effects": {
+      "fade_in": "opacity 0.2s ease",
+      "slide_up": "transform 0.3s ease, opacity 0.3s ease",
+      "scale": "transform 0.15s ease"
+    }
+  },
+  
+  "accessibility_standards": {
+    "color_contrast": {
+      "text_on_light": "minimum 4.5:1 ratio",
+      "text_on_dark": "minimum 4.5:1 ratio",
+      "large_text": "minimum 3:1 ratio"
+    },
+    
+    "focus_indicators": {
+      "outline": "2px solid var(--color-primary-500)",
+      "outline_offset": "2px",
+      "border_radius": "4px"
+    },
+    
+    "touch_targets": {
+      "minimum_size": "44px x 44px",
+      "spacing": "8px minimum between targets"
+    }
+  },
+  
+  "quality_criteria": {
+    "visual_consistency": "unified design element specifications",
+    "brand_alignment": "aligns with brand visual identity",
+    "responsive_integrity": "visual integrity across all screen sizes",
+    "accessibility_compliance": "meets accessibility standards",
+    "implementation_feasibility": "implementable with CSS/frontend technologies"
+  },
+  
+  "output_format": {
+    "structure": "complete design system specifications",
+    "css_variables": "CSS custom property definitions",
+    "component_styles": "component style specifications",
+    "responsive_rules": "responsive design rules",
+    "animation_specs": "animation effect specifications"
+  }
+}

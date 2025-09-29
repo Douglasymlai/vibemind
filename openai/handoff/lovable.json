@@ -1,0 +1,185 @@
+{
+  "platform": "lovable", 
+  "platform_name": "Lovable",
+  "description": "Application-focused handoff configuration for Lovable emphasizing user flows and complete app functionality",
+  "strategy": {
+    "focus": "Feature flows + user stories + overall application concept",
+    "keywords": ["view", "manage", "settings", "share", "collaborate", "monitor", "analyze", "generate", "export", "notify", "team", "project", "customer", "order", "data"],
+    "approach": "Functional layer analysis, focusing on user journeys and business logic"
+  },
+  
+  "prompt_templates": {
+    "base_template": "Build a ${app_category} application that allows ${user_roles} to ${core_features}, user flow: ${user_journey_steps}, main features include ${feature_list}, supporting ${integrations} integrations",
+    
+    "saas_template": "Build a ${app_type} application that allows ${user_roles} to ${core_functionality}.\n\nUser Flow:\n${user_journey}\n\nMain Features:\n${main_features}\n\nTechnical Requirements:\n${technical_requirements}",
+    
+    "ecommerce_template": "Build an e-commerce ${app_scope} application that allows ${user_types} to:\n${user_capabilities}\n\nShopping Flow:\n${shopping_flow}\n\nMerchant Features:\n${merchant_features}\n\nSystem Integrations:\n${system_integrations}",
+    
+    "social_template": "Build a social ${platform_type} application where users can:\n${social_features}\n\nContent Flow:\n${content_flow}\n\nSocial Interactions:\n${social_interactions}\n\nPrivacy & Security:\n${privacy_features}"
+  },
+  
+  "parameters": {
+    "high_priority": {
+      "app_category": ["SaaS", "E-commerce", "Social", "Productivity", "Entertainment", "Education", "Healthcare", "Finance"],
+      "user_roles": ["admin", "user", "guest", "moderator", "owner", "manager", "customer", "seller", "creator"],
+      "core_features": ["CRUD", "authentication", "real-time", "notifications", "analytics", "reporting", "collaboration"],
+      "user_journey": ["onboarding", "daily-use", "management", "reporting", "collaboration"]
+    },
+    
+    "medium_priority": {
+      "data_types": ["user-data", "content", "transactions", "analytics", "files", "messages"],
+      "integrations": ["payments", "email", "social", "cloud-storage", "analytics", "CRM", "API"],
+      "business_logic": ["workflows", "approvals", "automation", "rules", "permissions", "scheduling"],
+      "scalability": ["single-user", "team", "enterprise", "public"]
+    },
+    
+    "low_priority": {
+      "mobile_experience": ["responsive", "PWA", "native-feel", "touch-optimized"],
+      "real_time_features": ["chat", "notifications", "live-updates", "collaboration"],
+      "content_management": ["create", "edit", "delete", "publish", "moderate"],
+      "user_permissions": ["public", "private", "shared", "role-based"]
+    },
+    
+    "lovable_specific": {
+      "app_complexity": ["MVP", "standard", "advanced", "enterprise"],
+      "user_stories": ["registration", "content-creation", "collaboration", "reporting", "administration"],
+      "page_structure": ["dashboard", "listing", "detail", "settings", "profile", "onboarding"],
+      "navigation_flow": ["linear", "hub-spoke", "hierarchical", "tabbed"],
+      "data_relationships": ["one-to-one", "one-to-many", "many-to-many"]
+    }
+  },
+  
+  "scenarios": {
+    "enterprise_saas": {
+      "app_category": "SaaS",
+      "user_roles": ["admin", "manager", "employee"],
+      "core_features": ["analytics", "reporting", "user-management"],
+      "business_logic": ["approval-workflows", "role-permissions"],
+      "scalability": "enterprise",
+      "prompt": "Build an enterprise data analytics application that allows administrators to monitor business metrics and team performance.\n\nUser Flow:\n1. Login to access dashboard homepage\n2. View key metrics overview (user growth, revenue changes, conversion funnel)\n3. Click specific metrics to view detailed reports\n4. Set up data alerts and scheduled reports\n5. Manage team permissions and data access scope\n\nMain Features:\n- Real-time data dashboard displaying KPI metric cards\n- Interactive charts with time range selection and data drill-down\n- Custom report generation and export\n- Team collaboration and data sharing\n- Mobile responsive design for data access anytime"
+    },
+    
+    "ecommerce_platform": {
+      "app_category": "E-commerce",
+      "user_roles": ["customer", "seller", "admin"],
+      "core_features": ["catalog", "cart", "checkout", "orders"],
+      "integrations": ["payments", "shipping", "analytics"],
+      "mobile_experience": "PWA",
+      "prompt": "Build an e-commerce product browsing application that allows users to:\n- Browse product grid, view images, prices, ratings\n- Click products to view detail pages\n- Add items to cart with quantity selection\n- Filter products by price, category, rating\n- Save favorite items to wishlist\n- Compare similar products' specifications and prices\nSupports responsive design, mobile switches to single column layout"
+    },
+    
+    "social_platform": {
+      "app_category": "Social",
+      "core_features": ["posting", "messaging", "following", "notifications"],
+      "real_time_features": ["chat", "live-updates", "notifications"],
+      "content_management": ["create", "share", "moderate"],
+      "user_journey": ["discovery", "engagement", "sharing"],
+      "prompt": "Build a social media platform where users can:\n\nContent Creation Flow:\n1. Register/login, complete personal profile\n2. Publish text, images, video content\n3. Add tags and location information\n4. Set content visibility (public/private/friends)\n\nSocial Interactions:\n- Follow other users, view activity feed\n- Like, comment, share content\n- Direct messaging with text and media support\n- Create and join interest groups\n- Real-time notification system\n\nDiscovery Features:\n- Recommendation algorithm showing relevant content\n- Trending topics and hashtags\n- Nearby people and events\n- Search users and content"
+    }
+  },
+  
+  "user_journey_templates": {
+    "onboarding": {
+      "steps": ["account registration", "email verification", "profile completion", "feature onboarding", "first use"],
+      "goals": ["reduce registration barrier", "improve activation rate", "quick onboarding"],
+      "metrics": ["registration conversion rate", "user activation rate", "first day retention"]
+    },
+    
+    "daily_usage": {
+      "steps": ["login", "view overview", "execute core tasks", "view results", "logout"],
+      "goals": ["improve user stickiness", "deliver core value", "build usage habits"],
+      "metrics": ["DAU", "session duration", "feature usage frequency"]
+    },
+    
+    "collaboration": {
+      "steps": ["invite members", "assign permissions", "collaborative operations", "communication", "sync progress"],
+      "goals": ["promote team collaboration", "improve work efficiency", "enhance product value"],
+      "metrics": ["team activity", "collaboration frequency", "project completion rate"]
+    }
+  },
+  
+  "feature_categories": {
+    "core_functionality": {
+      "authentication": ["registration", "login", "password reset", "social login", "two-factor authentication"],
+      "user_management": ["personal profile", "account settings", "privacy controls", "notification preferences"],
+      "content_operations": ["create", "edit", "delete", "search", "filter", "sort"]
+    },
+    
+    "advanced_features": {
+      "analytics": ["data statistics", "user behavior analysis", "conversion funnel", "A/B testing"],
+      "automation": ["workflow automation", "scheduled tasks", "conditional triggers", "batch operations"],
+      "integrations": ["third-party API", "data import/export", "webhook", "sync services"]
+    },
+    
+    "business_features": {
+      "monetization": ["subscription billing", "one-time payment", "advertising system", "commission sharing"],
+      "compliance": ["data protection", "audit logs", "access control", "security certification"],
+      "scalability": ["load balancing", "database optimization", "caching strategy", "CDN distribution"]
+    }
+  },
+  
+  "technical_requirements": {
+    "architecture": {
+      "frontend": "React/Vue.js SPA",
+      "backend": "Node.js/Python API",
+      "database": "PostgreSQL/MongoDB",
+      "hosting": "cloud server deployment"
+    },
+    
+    "performance": {
+      "page_load": "< 3 seconds first screen load",
+      "api_response": "< 500ms API response",
+      "concurrent_users": "support 1000+ concurrent users",
+      "uptime": "99.9% 可用性"
+    },
+    
+    "security": {
+      "authentication": "JWT令牌认证",
+      "encryption": "数据传输HTTPS加密",
+      "validation": "输入数据验证",
+      "backup": "定期数据备份"
+    }
+  },
+  
+  "app_complexity_levels": {
+    "mvp": {
+      "features": "核心功能",
+      "users": "单一角色",
+      "pages": "3-5个主要页面",
+      "integrations": "基础集成",
+      "timeline": "2-4周开发"
+    },
+    
+    "standard": {
+      "features": "完整功能集",
+      "users": "多角色权限",
+      "pages": "10-15个页面",
+      "integrations": "多个第三方集成",
+      "timeline": "1-3个月开发"
+    },
+    
+    "enterprise": {
+      "features": "高级功能+定制",
+      "users": "复杂权限体系",
+      "pages": "20+个页面",
+      "integrations": "企业级集成",
+      "timeline": "3-6个月开发"
+    }
+  },
+  
+  "quality_criteria": {
+    "user_experience": "clear and smooth user flow",
+    "feature_completeness": "comprehensive feature coverage",
+    "technical_feasibility": "technically feasible implementation",
+    "business_value": "solves real business problems",
+    "scalability": "supports business growth"
+  },
+  
+  "output_format": {
+    "structure": "complete application architecture",
+    "user_stories": "detailed user stories",
+    "feature_specs": "feature specifications",
+    "technical_stack": "technology stack selection",
+    "deployment": "deployment solution"
+  }
+}

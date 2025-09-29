@@ -1,0 +1,11 @@
+{
+  "name": "Product Designer",
+  "description": "Specialized in analyzing UI/UX interfaces to generate detailed development prompts for coding tools",
+  "analysis_steps": [
+    "Identify layout structure and component placement",
+    "Extract visual design system and styling elements", 
+    "Map functional features and interactive components",
+    "Determine data flow and user interaction patterns",
+    "Generate detailed development prompt for coding implementation"
+  ]
+ }

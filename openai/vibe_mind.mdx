@@ -1,0 +1,39 @@
+# 1 High-level architecture (fast)
+	•	Agent runtime: use OpenAI Agents SDK for orchestration if you prefer a minimal agent-focused SDK and easy access to OpenAI vision models. Alternatively use Google ADK if you want richer multi-agent orchestration and evaluation tools (both are compatible with model calls).  ￼
+	•	Image model: call a vision-capable LLM (e.g., gpt-image-1 or the OpenAI image endpoint) to extract visual features, or run a CV preprocessing step (segmentation / object detection) and feed structured facts to the LLM. (There are community examples combining ADK + OpenAI image models.)  ￼
+	•	Input:
+	•	image (URL or base64)
+	•	designer_profile (JSON schema, defined below)
+	•	optional project_context (platform target: mobile/web; vibe coding preferences)
+	•	Output: design_handoff.json (structured, validated against schema) — ready to import into a vibe coding tool or to generate component code snippets.
+
+# 2 Designer profile
+
+A product designer profile should be a compact, machine-readable spec that tells the agent how to judge and annotate the design.
+
+Keep profiles small and finite; the agent should validate incoming profile JSON against your profile schema.
+
+# 3 Design-handoff JSON schema
+
+This is the structured result your vibe-coding tool can consume. Keep it explicit and normalised.
+
+at the moment we support v0 lovables and magic pattern for output. 
+
+#4 Agent flow & components (detailed)
+	1.	Receive inputs: image (URL/upload from user computer), designer_profile (JSON).
+  2.	Preprocess
+	•	Resize image → 512px max dimension.
+	•	Extract dominant colors (PIL + clustering).
+	•	Run OCR only if text is important (Tesseract).
+  •	Use vision LLM directly to describe layout in relative terms (“Top nav bar”, “3 buttons in row”), not pixel coordinates.
+	3.	LLM Analysis
+	•	Send the image and pre-extracted features to GPT-4o.
+	•	Few-shot prompt with JSON schema output (e.g., layout, palette, readability, contrast_issues).
+	4.	Synthesize handoff JSON:
+	•	LLM composes final design_handoff.json strictly matching your schema.
+	•	Add confidence scores and “uncertain” flags where visual info is low-confidence.
+	5.	Postprocess:
+	•	Validate schema, export assets, generate code snippets (vibe coding format).
+	•	Package results and return.
+
+Tip: prefer small, constrained LLM generation tasks — produce raw JSON only, no extra prose, and validate with a JSON schema validator.

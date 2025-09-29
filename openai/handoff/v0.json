@@ -1,0 +1,156 @@
+{
+  "platform": "v0",
+  "platform_name": "V0 (Vercel)",
+  "description": "Component-focused handoff configuration for V0 using shadcn/ui and Tailwind CSS",
+  "strategy": {
+    "focus": "Component-based + shadcn/ui terminology + specific layout descriptions",
+    "keywords": ["Card", "Button", "Input", "Badge", "Avatar", "grid", "flex", "sidebar", "navbar", "hover", "active", "modern", "clean"],
+    "approach": "Component hierarchy decomposition, focusing on UI component details and layout structure"
+  },
+  
+  "prompt_templates": {
+    "base_template": "Create a ${component_type} with ${layout_structure} layout, containing ${specific_elements}, using ${visual_style} style, supporting ${interaction_states} states, with ${color_scheme} theme",
+    
+    "dashboard_template": "Create a ${page_type} page containing:\n- Top navigation bar: ${navbar_elements}\n- Left sidebar: ${sidebar_elements}\n- Main content area: ${main_content}\n- Using ${theme} theme, ${primary_color} primary color, ${layout_style} layout\n- ${interactive_features}",
+    
+    "ecommerce_template": "Create a ${layout_type} layout with ${grid_columns} displaying ${component_type}. Each card contains:\n${card_elements}\nUsing ${design_style} design with ${hover_effects}",
+    
+    "form_template": "Create a ${form_type} form component containing:\n${form_fields}\nLayout using ${form_layout}, validation method ${validation_type}, ${submit_behavior}"
+  },
+  
+  "parameters": {
+    "high_priority": {
+      "component_type": ["Dashboard", "Card", "Button", "Form", "Modal", "Sidebar", "Header", "Grid", "List", "Table"],
+      "layout_structure": ["Grid", "Flex", "Stack", "Sidebar-Main", "Header-Content", "Three-Column"],
+      "ui_library": ["shadcn/ui", "Radix UI", "Headless UI"],
+      "styling_framework": ["Tailwind CSS", "CSS Modules"]
+    },
+    
+    "medium_priority": {
+      "interaction_states": ["hover", "focus", "active", "disabled", "loading", "selected"],
+      "responsive_behavior": ["mobile-first", "desktop-first", "adaptive"],
+      "color_scheme": ["light", "dark", "auto", "custom"],
+      "visual_style": ["modern", "minimalist", "glassmorphism", "neumorphism", "professional"]
+    },
+    
+    "low_priority": {
+      "animations": ["subtle", "smooth", "none", "custom"],
+      "accessibility": ["ARIA labels", "keyboard navigation", "screen reader"],
+      "border_radius": ["none", "sm", "md", "lg", "xl", "full"],
+      "shadow_depth": ["none", "sm", "md", "lg", "xl", "2xl"]
+    },
+    
+    "v0_specific": {
+      "shadcn_components": ["Button", "Card", "Input", "Select", "Textarea", "Badge", "Avatar", "Dialog", "Dropdown", "Tabs"],
+      "layout_patterns": ["dashboard", "landing", "auth", "ecommerce", "blog", "settings"],
+      "spacing_system": ["tight", "normal", "loose", "custom"],
+      "typography_scale": ["xs", "sm", "base", "lg", "xl", "2xl", "3xl", "4xl"],
+      "interactive_feedback": ["scale", "translate", "opacity", "color-change"],
+      "form_validation": ["inline", "tooltip", "modal", "toast"]
+    }
+  },
+  
+  "scenarios": {
+    "enterprise_dashboard": {
+      "component_type": "Dashboard",
+      "layout_structure": "Sidebar-Main",
+      "ui_library": "shadcn/ui",
+      "visual_style": "professional",
+      "color_scheme": "light",
+      "accessibility": "WCAG-compliant",
+      "prompt": "Create an admin dashboard page containing:\n- Top navigation bar: logo, search box, notification icon, user avatar dropdown menu\n- Left sidebar: navigation menu items, currently selected 'Analytics'\n- Main content area: 4 statistics cards (user count, revenue, conversion rate, growth rate), each card contains values, title, trend icon\n- Bottom chart area: line chart showing data from past 6 months\n- Using dark theme, blue primary color, modern card layout\n- Statistics cards support hover effects, showing detailed information"
+    },
+    
+    "ecommerce_grid": {
+      "component_type": "ProductGrid",
+      "layout_structure": "Grid",
+      "visual_style": "modern",
+      "interaction_states": ["hover", "loading", "sold-out"],
+      "responsive_behavior": "mobile-first",
+      "prompt": "Create a product grid layout, 3 columns 4 rows displaying product cards. Each card contains:\n- Product image (16:9 aspect ratio)\n- Product title (maximum 2 lines)\n- Price label (original price + discounted price)\n- 5-star rating component\n- Add to cart button\nUsing modern card design, hover effects showing shadow and quick preview"
+    },
+    
+    "social_feed": {
+      "component_type": ["Feed", "Profile", "Chat"],
+      "layout_structure": "Stack",
+      "visual_style": "modern",
+      "animations": "smooth",
+      "real_time": "live-updates",
+      "prompt": "Create a social media feed component containing:\n- Feed cards: user avatar, username, publish time, content, interaction buttons\n- Infinite scroll loading\n- Like, comment, share functionality\n- Real-time update notifications\n- Support for images, videos, link previews\nUsing modern card design with smooth animation effects"
+    }
+  },
+  
+  "component_mapping": {
+    "navigation": {
+      "navbar": "Use shadcn/ui NavigationMenu component",
+      "sidebar": "Use Sidebar component with Collapsible",
+      "breadcrumb": "Use Breadcrumb component"
+    },
+    
+    "data_display": {
+      "table": "Use Table component with Pagination",
+      "card": "Use Card component with CardHeader, CardContent",
+      "chart": "Use Recharts or Chart.js integration"
+    },
+    
+    "forms": {
+      "input": "Use Input component with Label",
+      "select": "Use Select component",
+      "textarea": "Use Textarea component",
+      "button": "Use Button component, variant attribute controls style"
+    },
+    
+    "feedback": {
+      "toast": "Use Toast component to display messages",
+      "dialog": "Use Dialog component to display modals",
+      "alert": "Use Alert component to display status information"
+    }
+  },
+  
+  "best_practices": {
+    "layout": [
+      "Prioritize using CSS Grid and Flexbox for layout",
+      "Use Tailwind CSS responsive class names",
+      "Follow 12-column grid system",
+      "Ensure mobile-first design"
+    ],
+    
+    "components": [
+      "Consistently use shadcn/ui component library",
+      "Maintain API consistency when customizing components",
+      "Use forwardRef to ensure ref forwarding",
+      "Implement complete TypeScript type support"
+    ],
+    
+    "styling": [
+      "Use Tailwind CSS utility classes",
+      "Define design system color variables",
+      "Unify border radius, shadow, and spacing specifications",
+      "Support dark mode switching"
+    ],
+    
+    "accessibility": [
+      "Add appropriate ARIA labels",
+      "Ensure keyboard navigation support",
+      "Provide sufficient color contrast",
+      "Support screen readers"
+    ]
+  },
+  
+  "output_format": {
+    "structure": "Component-based React/Next.js code",
+    "styling": "Tailwind CSS class names",
+    "typescript": true,
+    "shadcn_ui": true,
+    "responsive": true,
+    "accessibility": true
+  },
+  
+  "quality_criteria": {
+    "component_completeness": "All required UI components are defined",
+    "layout_accuracy": "Layout structure matches design mockup",
+    "interaction_states": "Interaction states fully implemented",
+    "responsive_design": "Responsive design adapts to all screen sizes",
+    "code_quality": "Code structure is clear and type-safe"
+  }
+}
