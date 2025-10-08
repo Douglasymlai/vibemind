@@ -1,0 +1,93 @@
+{
+  "timestamp": "2025-10-08T22:11:40.051269",
+  "image_url": "/var/folders/_v/1ysy5gk11dsbw9p336p9y6bm0000gn/T/tmptb1994l8_amazon.png",
+  "designer_profile": "Product Designer",
+  "platform_target": "v0",
+  "dominant_colors": [
+    {
+      "hex": "#dce7db",
+      "rgb": [
+        220,
+        231,
+        219
+      ],
+      "name": "light gray",
+      "confidence": 0.5081
+    },
+    {
+      "hex": "#26282b",
+      "rgb": [
+        38,
+        40,
+        43
+      ],
+      "name": "dark gray",
+      "confidence": 0.2049
+    },
+    {
+      "hex": "#6c8d77",
+      "rgb": [
+        108,
+        141,
+        119
+      ],
+      "name": "green",
+      "confidence": 0.1225
+    },
+    {
+      "hex": "#bb754a",
+      "rgb": [
+        187,
+        117,
+        74
+      ],
+      "name": "orange",
+      "confidence": 0.1141
+    },
+    {
+      "hex": "#417ae2",
+      "rgb": [
+        65,
+        122,
+        226
+      ],
+      "name": "blue",
+      "confidence": 0.0504
+    }
+  ],
+  "typography": "Unable to analyze",
+  "layout": {
+    "structure": "Analysis failed: Error code: 401 - {'error': {'message': \"You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.\", 'type': 'invalid_request_error', 'param': None, 'code': None}}",
+    "grid_system": null,
+    "spacing": {},
+    "responsive_behavior": null
+  },
+  "components": [],
+  "style_tokens": {
+    "colors": {
+      "primary": "#dce7db",
+      "secondary": "#26282b",
+      "palette": [
+        "#dce7db",
+        "#26282b",
+        "#6c8d77",
+        "#bb754a",
+        "#417ae2"
+      ]
+    },
+    "typography": "Unable to analyze",
+    "spacing": {},
+    "borders": {},
+    "shadows": {}
+  },
+  "responsive_specs": {},
+  "accessibility_notes": [
+    "Manual review required"
+  ],
+  "prompt_for_platform": "Analysis failed due to: Error code: 401 - {'error': {'message': \"You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.\", 'type': 'invalid_request_error', 'param': None, 'code': None}}. Please analyze manually.",
+  "code_suggestions": [],
+  "confidence_score": 0.0,
+  "uncertain_flags": [
+    "API Error: Error code: 401 - {'error': {'message': \"You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.\", 'type': 'invalid_request_error', 'param': None, 'code': None}}"
+  ]
+}
