@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*"$py".class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Environment files (secrets should be set in Railway dashboard)
+.env
+.env.local
+
+# Output files
+output/
+*.json
+
+# Test files
+test_*.py
+*_test.py
+
+# Documentation
+*.md
+*.mdx
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Images (except those needed for profiles/handoff)
+*.png
+*.jpg
+*.jpeg

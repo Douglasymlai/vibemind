@@ -5,19 +5,17 @@ Provides REST API endpoints compatible with the Chrome extension.
 """
 
 import os
-import json
 import base64
 import tempfile
 import shutil
 from datetime import datetime
-from typing import Dict, Any, Optional, List, Union
+from typing import Optional, List
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 # Import the OpenAI backend
-from vibe_mind import VibeMindOpenAI, DesignHandoff
+from vibe_mind import VibeMindOpenAI
 
 # Pydantic models for request/response
 class ApiKeyRequest(BaseModel):
@@ -385,4 +383,6 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("api_server:app", host="0.0.0.0", port=8000, reload=True)
+    # Use Railway's PORT environment variable or default to 8000 for local development
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("api_server:app", host="0.0.0.0", port=port, reload=False)
