@@ -9,25 +9,25 @@ Vibe Mind - AI Prompt Enhancer
 
 ### Short Description (132 characters max)
 ```
-Enhance prompts for V0, Claude, ChatGPT & more. Analyze images and text with AI to create better vibe coding prompts.
+Enhance prompts for V0, Magic Pattern & Lovable. Analyze images and text with AI to create better vibe coding prompts.
 ```
-(130 characters)
+(119 characters)
 
 ### Detailed Description
 
 ```markdown
-Transform your ideas into detailed, high-quality prompts for AI coding platforms like V0, Magic Pattern, Lovable, Claude, ChatGPT, and more.
+Transform your ideas into detailed, high-quality prompts for AI vibe coding platforms: V0, Magic Pattern, and Lovable.
 
 🎯 What is Vibe Mind?
 
-Vibe Mind is a Chrome extension that uses OpenAI's vision API to analyze images and enhance text prompts. Perfect for developers, designers, and creators who want to get better results from AI coding tools.
+Vibe Mind is a Chrome extension that uses OpenAI's vision API to analyze images and enhance text prompts. Perfect for developers and designers who want to get better results from AI coding tools.
 
 ✨ Key Features
 
 • 📸 Image Analysis - Upload UI designs, sketches, or screenshots and get detailed, structured prompts
 • ✍️ Text Enhancement - Transform simple ideas into comprehensive, detailed prompts
 • 🎨 Design Understanding - Extract colors, layouts, components, and design patterns from images
-• 🚀 Platform-Optimized - Generate prompts tailored for V0, Magic Pattern, Lovable, and more
+• 🚀 Platform-Optimized - Generate prompts tailored specifically for V0, Magic Pattern, and Lovable
 • 🎭 Multiple Profiles - Choose from different designer profiles (Product Designer, Fintech, Gaming, etc.)
 • 📋 Quick Copy - Instantly copy enhanced prompts to clipboard
 • 🔒 Privacy-First - Your API key stays on your device, we don't store your data
@@ -36,14 +36,14 @@ Vibe Mind is a Chrome extension that uses OpenAI's vision API to analyze images 
 
 1. Install the extension
 2. Enter your OpenAI API key (get one at platform.openai.com)
-3. Visit any supported platform (V0.dev, Claude.ai, ChatGPT, etc.)
+3. Visit V0.dev, Magic Pattern, or Lovable.dev
 4. Select text or upload an image
 5. Click "Enhance" and get AI-powered prompt suggestions
-6. Copy and paste into your favorite AI tool
+6. Copy and paste into your vibe coding platform
 
 🎓 Perfect For
 
-• Developers using AI coding assistants
+• Developers using V0, Magic Pattern, or Lovable
 • Designers creating UI/UX with AI tools
 • Product managers specifying features
 • Anyone who wants better AI-generated code
@@ -61,16 +61,9 @@ FREE! Bring your own OpenAI API key. You pay OpenAI directly for usage (typicall
 
 🌐 Supported Platforms
 
-• V0.dev (Vercel)
-• Magic Pattern
-• Lovable.dev
-• Claude.ai (Anthropic)
-• ChatGPT (OpenAI)
-• Google Gemini
-• Figma
-• Linear
-• Notion
-• And more...
+• V0.dev (Vercel) - AI-powered React/Next.js code generation
+• Magic Pattern - AI design to code
+• Lovable.dev - AI full-stack app builder
 
 📚 Documentation
 
@@ -87,11 +80,11 @@ Need help? Found a bug? Have a feature request?
 
 1. Install Vibe Mind
 2. Get your OpenAI API key (free account available at platform.openai.com)
-3. Start creating amazing prompts!
+3. Start creating amazing prompts for V0, Magic Pattern, and Lovable!
 
 ---
 
-Keywords: AI, prompt engineering, V0, Claude, ChatGPT, OpenAI, vision API, UI design, code generation, vibe coding, developer tools, productivity
+Keywords: AI, prompt engineering, V0, Vercel, Magic Pattern, Lovable, OpenAI, vision API, UI design, code generation, vibe coding, developer tools, productivity
 ```
 
 ---

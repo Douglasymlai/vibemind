@@ -324,14 +324,7 @@ class VibeMindBackground {
             const supportedSites = [
                 'v0.dev',
                 'magicpattern.design',
-                'lovable.dev',
-                'claude.ai',
-                'chatgpt.com',
-                'chat.openai.com',
-                'gemini.google.com',
-                'figma.com',
-                'linear.app',
-                'notion.so'
+                'lovable.dev'
             ];
 
             const isSupportedSite = supportedSites.some(site => tab.url.includes(site));

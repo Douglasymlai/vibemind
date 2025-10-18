@@ -35,16 +35,7 @@
             "matches": [
                 "https://v0.dev/*",
                 "https://magicpattern.design/*",
-                "https://lovable.dev/*",
-                "https://claude.ai/*",
-                "https://chatgpt.com/*",
-                "https://chat.openai.com/*",
-                "https://gemini.google.com/*",
-                "https://www.figma.com/*",
-                "https://linear.app/*",
-                "https://notion.so/*",
-                "https://*.notion.so/*",
-                "<all_urls>"
+                "https://lovable.dev/*"
             ],
             "js": [
                 "content.js"
