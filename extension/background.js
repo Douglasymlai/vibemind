@@ -1,5 +1,11 @@
 // Background service worker for Vibe Mind Chrome Extension
 
+// Import config
+importScripts('config.js');
+const API_BASE_URL = CONFIG.API_BASE_URL;
+const API_ROOT_URL = CONFIG.API_ROOT_URL;
+const FRONTEND_URL = CONFIG.FRONTEND_URL;
+
 class VibeMindBackground {
     constructor() {
         this.init();
@@ -30,7 +36,7 @@ class VibeMindBackground {
         // Handle extension startup/shutdown
         chrome.runtime.onStartup.addListener(this.onStartup.bind(this));
         chrome.runtime.onSuspend.addListener(this.onSuspend.bind(this));
-        
+
         // Handle when extension is disabled/removed
         if (chrome.management && chrome.management.onDisabled) {
             chrome.management.onDisabled.addListener(this.onExtensionDisabled.bind(this));
@@ -136,7 +142,7 @@ class VibeMindBackground {
 
     async enhanceSelectedText(info, tab) {
         const selectedText = info.selectionText;
-        
+
         if (!selectedText || !selectedText.trim()) {
             this.showNotification('No text selected', 'warning');
             return;
@@ -155,7 +161,7 @@ class VibeMindBackground {
             this.showNotification('Enhancing text...', 'info');
 
             // Call API
-            const response = await fetch('http://localhost:8000/api/analyze', {
+            const response = await fetch(`${API_BASE_URL}/analyze`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -191,7 +197,7 @@ class VibeMindBackground {
 
     async analyzeImage(info, tab) {
         const imageUrl = info.srcUrl;
-        
+
         if (!imageUrl) {
             this.showNotification('No image URL found', 'warning');
             return;
@@ -210,7 +216,7 @@ class VibeMindBackground {
             this.showNotification('Analyzing image...', 'info');
 
             // Call API
-            const response = await fetch('http://localhost:8000/api/analyze', {
+            const response = await fetch(`${API_BASE_URL}/analyze`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -246,7 +252,7 @@ class VibeMindBackground {
     }
 
     async openFullApp() {
-        chrome.tabs.create({ url: 'http://localhost:3000' });
+        chrome.tabs.create({ url: FRONTEND_URL });
     }
 
     async copyToClipboard(text) {
@@ -329,7 +335,7 @@ class VibeMindBackground {
             ];
 
             const isSupportedSite = supportedSites.some(site => tab.url.includes(site));
-            
+
             if (isSupportedSite) {
                 chrome.scripting.executeScript({
                     target: { tabId: tabId },
@@ -413,9 +419,9 @@ class VibeMindBackground {
     async stopBackendServer() {
         try {
             // First try to gracefully shutdown via API
-            const response = await fetch('http://localhost:8000/api/shutdown', {
+            const response = await fetch(`${API_ROOT_URL}/api/shutdown`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'}
+                headers: { 'Content-Type': 'application/json' }
             }).catch(() => null);
 
             if (response && response.ok) {
@@ -426,7 +432,7 @@ class VibeMindBackground {
             // If API shutdown fails, try to kill the process
             // Note: This requires native messaging host for full functionality
             console.log('Attempting to stop backend server process');
-            
+
             // Send message to any active tabs to notify backend shutdown
             chrome.tabs.query({}, (tabs) => {
                 tabs.forEach(tab => {
@@ -446,7 +452,7 @@ class VibeMindBackground {
     // Check if backend is running
     async isBackendRunning() {
         try {
-            const response = await fetch('http://localhost:8000/api/health');
+            const response = await fetch(`${API_ROOT_URL}/api/health`);
             return response.ok;
         } catch (error) {
             return false;

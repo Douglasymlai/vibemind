@@ -1,6 +1,22 @@
 // Content script for Vibe Mind Chrome Extension
 // Injects enhancement functionality into supported websites
 
+// Load config
+let API_BASE_URL = 'https://vibemind-production.up.railway.app/api';
+let API_ROOT_URL = 'https://vibemind-production.up.railway.app';
+let FRONTEND_URL = 'http://localhost:3000';
+
+// Try to load from config.js if available
+try {
+    if (typeof CONFIG !== 'undefined') {
+        API_BASE_URL = CONFIG.API_BASE_URL;
+        API_ROOT_URL = CONFIG.API_ROOT_URL;
+        FRONTEND_URL = CONFIG.FRONTEND_URL;
+    }
+} catch (e) {
+    console.log('Using default config');
+}
+
 class VibeMindContentScript {
     constructor() {
         this.isInjected = false;
@@ -16,7 +32,7 @@ class VibeMindContentScript {
     init() {
         // Load Lottie library
         this.loadLottieLibrary();
-        
+
         // Wait for page to load
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.injectEnhancementUI());
@@ -26,7 +42,7 @@ class VibeMindContentScript {
 
         // Listen for dynamic content changes
         this.observePageChanges();
-        
+
         // Listen for input field focus/selection events
         this.setupInputDetection();
     }
@@ -34,7 +50,7 @@ class VibeMindContentScript {
     loadLottieLibrary() {
         // Check if Lottie is already loaded
         if (window.lottie) return;
-        
+
         // Load Lottie from local extension file
         const script = document.createElement('script');
         script.src = chrome.runtime.getURL('lottie.min.js');
@@ -82,7 +98,7 @@ class VibeMindContentScript {
                 const range = selection.getRangeAt(0);
                 const container = range.commonAncestorContainer;
                 const element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
-                
+
                 if (this.isTextInput(element) && !selection.isCollapsed) {
                     this.showFloatingButton(element, true);
                 }
@@ -92,10 +108,10 @@ class VibeMindContentScript {
 
     isTextInput(element) {
         if (!element) return false;
-        
+
         const tagName = element.tagName.toLowerCase();
         const type = element.type ? element.type.toLowerCase() : '';
-        
+
         return (
             tagName === 'textarea' ||
             (tagName === 'input' && ['text', 'email', 'search', 'url'].includes(type)) ||
@@ -106,16 +122,16 @@ class VibeMindContentScript {
 
     showFloatingButton(inputElement, hasSelection = false) {
         this.activeInput = inputElement;
-        
+
         // Remove existing floating button
         this.hideFloatingButton();
-        
+
         // Create floating button
         const button = document.createElement('button');
         button.className = 'vibe-mind-floating-btn';
         button.innerHTML = hasSelection ? '✨ Enhance Selection' : '✨ Enhance Prompt';
         button.title = 'Enhance with Vibe Mind AI';
-        
+
         // Style the floating button
         Object.assign(button.style, {
             position: 'absolute',
@@ -157,10 +173,10 @@ class VibeMindContentScript {
 
         // Position the button
         this.positionFloatingButton(inputElement, button);
-        
+
         // Store reference
         this.enhanceButton = button;
-        
+
         // Auto-hide after delay if no interaction
         setTimeout(() => {
             if (this.enhanceButton === button && !this.isDialogOpen()) {
@@ -173,14 +189,14 @@ class VibeMindContentScript {
         const rect = inputElement.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-        
+
         // Position above the input field
         const top = rect.top + scrollTop - 45;
         const left = rect.right + scrollLeft - 150;
-        
+
         button.style.top = `${Math.max(10, top)}px`;
         button.style.left = `${Math.min(window.innerWidth - 170, Math.max(10, left))}px`;
-        
+
         document.body.appendChild(button);
     }
 
@@ -226,7 +242,7 @@ class VibeMindContentScript {
         this.dialog = document.createElement('div');
         this.dialog.className = 'vibe-mind-dialog';
         this.dialog.innerHTML = this.getDialogHTML();
-        
+
         Object.assign(this.dialog.style, {
             position: 'fixed',
             top: '50%',
@@ -247,11 +263,11 @@ class VibeMindContentScript {
 
         // Add event listeners
         this.setupDialogEventListeners();
-        
+
         // Append to body
         document.body.appendChild(this.overlay);
         document.body.appendChild(this.dialog);
-        
+
         // Close on overlay click
         this.overlay.addEventListener('click', () => this.hideDialog());
     }
@@ -260,7 +276,7 @@ class VibeMindContentScript {
         const inputText = this.getInputText(this.activeInput);
         const hasSelection = window.getSelection().toString().trim().length > 0;
         const selectedText = hasSelection ? window.getSelection().toString().trim() : '';
-        
+
         return `
             <div class="vibe-mind-dialog-header">
                 <h3>Prompt Enhancement</h3>
@@ -347,7 +363,7 @@ class VibeMindContentScript {
 
     getInputText(element) {
         if (!element) return '';
-        
+
         if (element.tagName === 'TEXTAREA' || element.tagName === 'INPUT') {
             return element.value;
         } else if (element.contentEditable === 'true') {
@@ -359,7 +375,7 @@ class VibeMindContentScript {
     getInputPreview() {
         const text = this.getInputText(this.activeInput);
         if (!text) return '';
-        
+
         const maxLength = 100;
         return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     }
@@ -367,12 +383,12 @@ class VibeMindContentScript {
     setupDialogEventListeners() {
         // Close button
         this.dialog.querySelector('.vibe-mind-close-btn').addEventListener('click', () => this.hideDialog());
-        
-        
+
+
         // Image upload
         const uploadArea = this.dialog.querySelector('#uploadArea');
         const imageInput = this.dialog.querySelector('#imageInput');
-        
+
         uploadArea.addEventListener('click', () => imageInput.click());
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -389,16 +405,16 @@ class VibeMindContentScript {
                 this.handleImageUpload(files[0]);
             }
         });
-        
+
         imageInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
                 this.handleImageUpload(e.target.files[0]);
             }
         });
-        
+
         // Remove image
         this.dialog.querySelector('#removeImage').addEventListener('click', () => this.removeImage());
-        
+
         // Action buttons
         this.dialog.querySelector('#cancelBtn').addEventListener('click', () => this.hideDialog());
         this.dialog.querySelector('#enhanceBtn').addEventListener('click', () => this.enhancePrompt());
@@ -413,25 +429,25 @@ class VibeMindContentScript {
             this.showNotification('Please select an image file', 'error');
             return;
         }
-        
+
         if (file.size > 10 * 1024 * 1024) { // 10MB limit
             this.showNotification('Image size should be less than 10MB', 'error');
             return;
         }
-        
+
         const reader = new FileReader();
         reader.onload = (e) => {
             const preview = this.dialog.querySelector('#imagePreview');
             const previewImage = this.dialog.querySelector('#previewImage');
             const imageName = this.dialog.querySelector('#imageName');
             const uploadArea = this.dialog.querySelector('#uploadArea');
-            
+
             previewImage.src = e.target.result;
             imageName.textContent = file.name;
-            
+
             uploadArea.style.display = 'none';
             preview.style.display = 'block';
-            
+
             // Store file reference
             this.uploadedFile = file;
         };
@@ -441,30 +457,30 @@ class VibeMindContentScript {
     removeImage() {
         const preview = this.dialog.querySelector('#imagePreview');
         const uploadArea = this.dialog.querySelector('#uploadArea');
-        
+
         preview.style.display = 'none';
         uploadArea.style.display = 'flex';
-        
+
         this.uploadedFile = null;
     }
 
     async enhancePrompt() {
         const selectedRole = this.dialog.querySelector('input[name="role"]:checked').value;
         const inputText = this.getInputText(this.activeInput);
-        
+
         // Get API key
         const result = await chrome.storage.local.get(['openai_api_key']);
         if (!result.openai_api_key) {
             this.showNotification('Please set your OpenAI API key in the extension popup first', 'error');
             return;
         }
-        
+
         // Show loading state
         this.showLoadingState();
-        
+
         try {
             let response;
-            
+
             if (this.uploadedFile) {
                 // Image analysis
                 const formData = new FormData();
@@ -472,14 +488,14 @@ class VibeMindContentScript {
                 formData.append('message', inputText || 'Analyze this image and create a detailed design prompt');
                 formData.append('profile_key', selectedRole);
                 formData.append('api_key', result.openai_api_key);
-                
-                response = await fetch('http://localhost:8000/api/analyze-upload', {
+
+                response = await fetch(`${API_BASE_URL}/analyze-upload`, {
                     method: 'POST',
                     body: formData,
                 });
             } else {
                 // Text-only enhancement
-                response = await fetch('http://localhost:8000/api/analyze', {
+                response = await fetch(`${API_BASE_URL}/analyze`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -491,18 +507,18 @@ class VibeMindContentScript {
                     }),
                 });
             }
-            
+
             if (!response.ok) {
                 const error = await response.json();
                 throw new Error(error.detail || 'Enhancement failed');
             }
-            
+
             const data = await response.json();
             const enhancedPrompt = data.summarized_report || data.structured_result?.analysis_result || 'Enhancement completed';
-            
+
             // Show result
             this.showResult(enhancedPrompt);
-            
+
         } catch (error) {
             console.error('Enhancement failed:', error);
             this.showNotification(error.message || 'Enhancement failed. Please try again.', 'error');
@@ -512,7 +528,7 @@ class VibeMindContentScript {
 
     async loadAnimationData() {
         if (this.animationData) return;
-        
+
         try {
             // Load from extension's local copy
             const response = await fetch(chrome.runtime.getURL('loading.json'));
@@ -524,10 +540,10 @@ class VibeMindContentScript {
         } catch (error) {
             console.log('Could not load local loading.json, trying fallback');
         }
-        
+
         try {
-            // Fallback: try to load from localhost (if frontend is running)
-            const response = await fetch('http://localhost:3000/loading.json');
+            // Fallback: try to load from frontend (if running)
+            const response = await fetch(`${FRONTEND_URL}/loading.json`);
             if (response.ok) {
                 this.animationData = await response.json();
                 console.log('Loaded loading.json from localhost fallback');
@@ -545,7 +561,7 @@ class VibeMindContentScript {
         this.dialog.querySelector('.vibe-mind-dialog-footer').style.display = 'none';
         this.dialog.querySelector('#loadingState').style.display = 'flex';
         this.dialog.querySelector('#resultState').style.display = 'none';
-        
+
         // Load and start Lottie animation
         await this.loadAnimationData();
         this.startLottieAnimation();
@@ -554,13 +570,13 @@ class VibeMindContentScript {
     startLottieAnimation() {
         const lottieContainer = this.dialog.querySelector('#loadingLottie');
         if (!lottieContainer) return;
-        
+
         // Clear any existing animation
         if (this.lottieAnimation) {
             this.lottieAnimation.destroy();
             this.lottieAnimation = null;
         }
-        
+
         if (this.animationData && window.lottie) {
             // Use Lottie animation from loading.json
             console.log('Starting Lottie animation with loading.json data');
@@ -591,7 +607,7 @@ class VibeMindContentScript {
         this.dialog.querySelector('.vibe-mind-dialog-footer').style.display = 'none';
         this.dialog.querySelector('#loadingState').style.display = 'none';
         this.dialog.querySelector('#resultState').style.display = 'block';
-        
+
         this.dialog.querySelector('#resultText').value = enhancedPrompt;
         this.enhancedResult = enhancedPrompt;
     }
@@ -607,12 +623,12 @@ class VibeMindContentScript {
     async copyResult() {
         try {
             await navigator.clipboard.writeText(this.enhancedResult);
-            
+
             const copyBtn = this.dialog.querySelector('#copyResult');
             const originalText = copyBtn.textContent;
             copyBtn.textContent = 'Copied!';
             copyBtn.style.backgroundColor = '#10b981';
-            
+
             setTimeout(() => {
                 copyBtn.textContent = originalText;
                 copyBtn.style.backgroundColor = '';
@@ -658,7 +674,7 @@ class VibeMindContentScript {
             this.overlay.style.opacity = '0';
             this.dialog.style.opacity = '0';
             this.dialog.style.transform = 'translate(-50%, -50%) scale(0.9)';
-            
+
             setTimeout(() => {
                 if (this.overlay) this.overlay.remove();
                 if (this.dialog) this.dialog.remove();

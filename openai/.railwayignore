@@ -12,17 +12,18 @@ ENV/
 .env
 .env.local
 
-# Output files
+# Output files (exclude generated handoffs, but keep profiles and handoff templates)
 output/
-*.json
+test_handoff_*.json
+design_handoff_*.json
 
 # Test files
 test_*.py
 *_test.py
 
-# Documentation
-*.md
+# Documentation (exclude docs but keep README for Railway)
 *.mdx
+design_prompt_*.md
 
 # IDE
 .vscode/
