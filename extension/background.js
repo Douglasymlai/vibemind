@@ -50,13 +50,19 @@ class VibeMindBackground {
         this.createContextMenus();
 
         // Set default storage values
-        chrome.storage.local.set({
-            vibe_mind_settings: {
-                auto_inject: true,
-                default_profile: 'product_designer',
-                show_notifications: true
-            }
-        });
+        if (chrome.storage && chrome.storage.local) {
+            chrome.storage.local.set({
+                vibe_mind_settings: {
+                    auto_inject: true,
+                    default_profile: 'product_designer',
+                    show_notifications: true
+                }
+            }).catch(error => {
+                console.error('Failed to set default storage values:', error);
+            });
+        } else {
+            console.error('Chrome storage API not available during installation');
+        }
     }
 
     createContextMenus() {
@@ -149,6 +155,11 @@ class VibeMindBackground {
         }
 
         // Check if API key is set
+        if (!chrome.storage || !chrome.storage.local) {
+            this.showNotification('Storage API not available', 'error');
+            return;
+        }
+        
         const result = await chrome.storage.local.get(['openai_api_key']);
         if (!result.openai_api_key) {
             this.showNotification('Please set your OpenAI API key first', 'warning');
@@ -185,7 +196,9 @@ class VibeMindBackground {
             await this.copyToClipboard(enhancedText);
 
             // Store result
-            await chrome.storage.local.set({ last_result: enhancedText });
+            if (chrome.storage && chrome.storage.local) {
+                await chrome.storage.local.set({ last_result: enhancedText });
+            }
 
             this.showNotification('Text enhanced and copied to clipboard!', 'success');
 
@@ -204,6 +217,11 @@ class VibeMindBackground {
         }
 
         // Check if API key is set
+        if (!chrome.storage || !chrome.storage.local) {
+            this.showNotification('Storage API not available', 'error');
+            return;
+        }
+        
         const result = await chrome.storage.local.get(['openai_api_key']);
         if (!result.openai_api_key) {
             this.showNotification('Please set your OpenAI API key first', 'warning');
@@ -241,7 +259,9 @@ class VibeMindBackground {
             await this.copyToClipboard(analysisResult);
 
             // Store result
-            await chrome.storage.local.set({ last_result: analysisResult });
+            if (chrome.storage && chrome.storage.local) {
+                await chrome.storage.local.set({ last_result: analysisResult });
+            }
 
             this.showNotification('Image analyzed and results copied to clipboard!', 'success');
 
@@ -298,14 +318,30 @@ class VibeMindBackground {
     onMessage(message, sender, sendResponse) {
         switch (message.type) {
             case 'get-api-key':
+                if (!chrome.storage || !chrome.storage.local) {
+                    console.error('Chrome storage API not available');
+                    sendResponse({ apiKey: null });
+                    return;
+                }
                 chrome.storage.local.get(['openai_api_key']).then(result => {
                     sendResponse({ apiKey: result.openai_api_key });
+                }).catch(error => {
+                    console.error('Failed to get API key from storage:', error);
+                    sendResponse({ apiKey: null });
                 });
                 return true; // Will respond asynchronously
 
             case 'set-api-key':
+                if (!chrome.storage || !chrome.storage.local) {
+                    console.error('Chrome storage API not available');
+                    sendResponse({ success: false });
+                    return;
+                }
                 chrome.storage.local.set({ openai_api_key: message.apiKey }).then(() => {
                     sendResponse({ success: true });
+                }).catch(error => {
+                    console.error('Failed to set API key in storage:', error);
+                    sendResponse({ success: false });
                 });
                 return true;
 
@@ -323,7 +359,8 @@ class VibeMindBackground {
         if (changeInfo.status === 'complete' && tab.url) {
             const supportedSites = [
                 'v0.dev',
-                'magicpattern.design',
+                'v0.app',
+                'www.magicpatterns.com',
                 'lovable.dev'
             ];
 

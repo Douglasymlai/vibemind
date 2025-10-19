@@ -14,7 +14,6 @@
         "management"
     ],
     "host_permissions": [
-        "http://localhost:8000/*",
         "https://vibemind-production.up.railway.app/*",
         "https://api.openai.com/*"
     ],
@@ -34,7 +33,8 @@
         {
             "matches": [
                 "https://v0.dev/*",
-                "https://magicpattern.design/*",
+                "https://v0.app/*",
+                "https://www.magicpatterns.com/*",
                 "https://lovable.dev/*"
             ],
             "js": [
@@ -62,7 +62,8 @@
                 "sidepanel.js",
                 "sidepanel.css",
                 "generating.json",
-                "lottie.min.js"
+                "lottie.min.js",
+                "icons/loading.gif"
             ],
             "matches": [
                 "<all_urls>"

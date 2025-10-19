@@ -16,7 +16,6 @@ try {
 
 class SidePanelManager {
     constructor() {
-        this.isCollapsed = false;
         this.recentResults = [];
         this.currentWidth = 400;
         this.minWidth = 320;
@@ -25,6 +24,7 @@ class SidePanelManager {
     }
 
     async init() {
+        this.detectAndApplyTheme();
         this.setupEventListeners();
         this.loadSettings();
         await this.checkApiKeyStatus();
@@ -32,10 +32,26 @@ class SidePanelManager {
         this.loadRecentResults();
     }
 
-    setupEventListeners() {
-        // Panel collapse/expand
-        document.getElementById('collapseBtn').addEventListener('click', this.toggleCollapse.bind(this));
+    detectAndApplyTheme() {
+        // Check for dark mode preference
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (prefersDark) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
 
+        // Listen for changes to dark mode preference
+        if (window.matchMedia) {
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            mediaQuery.addEventListener('change', (e) => {
+                document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+            });
+        }
+    }
+
+    setupEventListeners() {
         // Section toggles
         document.querySelectorAll('.section-toggle').forEach(toggle => {
             toggle.addEventListener('click', this.toggleSection.bind(this));
@@ -63,13 +79,14 @@ class SidePanelManager {
 
         // Feature buttons
         document.getElementById('enhancePrompt').addEventListener('click', this.enhancePrompt.bind(this));
-        document.getElementById('analyzeImage').addEventListener('click', this.analyzeImage.bind(this));
-        document.getElementById('openFullApp').addEventListener('click', this.openFullApp.bind(this));
 
         // Quick actions
-        document.getElementById('copyToClipboard').addEventListener('click', this.copyToClipboard.bind(this));
         document.getElementById('openSettings').addEventListener('click', this.openSettings.bind(this));
         document.getElementById('clearCache').addEventListener('click', this.clearCache.bind(this));
+
+        // Legal links
+        document.getElementById('privacyPolicyBtn').addEventListener('click', this.openPrivacyPolicy.bind(this));
+        document.getElementById('termsOfServiceBtn').addEventListener('click', this.openTermsOfService.bind(this));
 
         // Error handling
         document.getElementById('retryBtn').addEventListener('click', this.retry.bind(this));
@@ -131,23 +148,8 @@ class SidePanelManager {
             this.analyzeImage();
         }
 
-        // Ctrl/Cmd + [: Toggle collapse
-        if ((e.ctrlKey || e.metaKey) && e.key === '[') {
-            e.preventDefault();
-            this.toggleCollapse();
-        }
     }
 
-    toggleCollapse() {
-        const container = document.querySelector('.sidepanel-container');
-        const collapseIcon = document.querySelector('.collapse-icon');
-
-        this.isCollapsed = !this.isCollapsed;
-        container.classList.toggle('collapsed', this.isCollapsed);
-
-        // Save state
-        this.saveSettings();
-    }
 
     toggleSection(e) {
         e.stopPropagation();
@@ -278,7 +280,7 @@ class SidePanelManager {
             clearTimeout(timeoutId);
 
             if (response.ok) {
-                connectionStatus.textContent = 'Backend connected';
+                connectionStatus.textContent = 'Service connected';
                 connectionStatus.style.color = '#10b981';
             } else {
                 throw new Error('Backend not responding');
@@ -495,6 +497,14 @@ class SidePanelManager {
         chrome.tabs.create({ url: FRONTEND_URL });
     }
 
+    openPrivacyPolicy() {
+        chrome.tabs.create({ url: 'http://vibemind.fun/privacy-policy' });
+    }
+
+    openTermsOfService() {
+        chrome.tabs.create({ url: 'http://vibemind.fun/terms-of-service' });
+    }
+
     async copyToClipboard() {
         try {
             const result = await chrome.storage.local.get(['last_result']);
@@ -635,13 +645,7 @@ class SidePanelManager {
             const result = await chrome.storage.local.get(['sidepanel_settings']);
             if (result.sidepanel_settings) {
                 const settings = result.sidepanel_settings;
-                this.isCollapsed = settings.isCollapsed || false;
                 this.currentWidth = settings.width || 400;
-
-                // Apply settings
-                if (this.isCollapsed) {
-                    document.querySelector('.sidepanel-container').classList.add('collapsed');
-                }
 
                 document.body.style.width = `${this.currentWidth}px`;
             }
@@ -654,7 +658,6 @@ class SidePanelManager {
         try {
             await chrome.storage.local.set({
                 sidepanel_settings: {
-                    isCollapsed: this.isCollapsed,
                     width: this.currentWidth
                 }
             });

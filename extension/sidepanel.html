@@ -10,17 +10,8 @@
 
 <body>
     <div class="sidepanel-container">
-        <!-- Collapsible Header -->
+        <!-- Header -->
         <div class="header" id="panelHeader">
-            <div class="header-main">
-                <div class="logo">
-                    <img src="icons/icon-32.png" alt="Vibe Mind" width="24" height="24">
-                    <h1>Vibe Mind</h1>
-                </div>
-                <button class="collapse-btn" id="collapseBtn" title="Collapse/Expand Panel">
-                    <span class="collapse-icon">◀</span>
-                </button>
-            </div>
             <div class="api-status" id="apiStatus">
                 <span class="status-indicator" id="statusIndicator"></span>
                 <span id="statusText">No API Key</span>
@@ -54,46 +45,21 @@
                     <button class="section-toggle" data-target="mainFeatures">−</button>
                 </div>
                 <div class="section-content" id="mainFeatures">
-                    <div class="feature-grid">
-                        <button id="enhancePrompt" class="feature-btn">
-                            <div class="feature-icon">✨</div>
-                            <div class="feature-text">
-                                <div class="feature-title">Enhance Prompt</div>
-                                <div class="feature-desc">AI-powered prompt enhancement</div>
-                            </div>
-                        </button>
-
-                        <button id="analyzeImage" class="feature-btn">
-                            <div class="feature-icon">🖼️</div>
-                            <div class="feature-text">
-                                <div class="feature-title">Analyze Image</div>
-                                <div class="feature-desc">Extract design insights from images</div>
-                            </div>
-                        </button>
-
-                        <button id="openFullApp" class="feature-btn">
-                            <div class="feature-icon">🚀</div>
-                            <div class="feature-text">
-                                <div class="feature-title">Open Full App</div>
-                                <div class="feature-desc">Access all features</div>
-                            </div>
-                        </button>
-                    </div>
+                    <button id="enhancePrompt" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px;">
+                        ✨ Enhance Prompt
+                    </button>
                 </div>
             </div>
 
-            <!-- Quick Actions Section -->
+            <!-- Settings Section -->
             <div class="section" id="quickActionsSection" style="display: none;">
                 <div class="section-header">
-                    <h3>Quick Actions</h3>
+                    <h3>Settings</h3>
                     <button class="section-toggle" data-target="quickActions">−</button>
                 </div>
                 <div class="section-content" id="quickActions">
-                    <button id="copyToClipboard" class="btn btn-secondary" disabled>
-                        📋 Copy Last Result
-                    </button>
                     <button id="openSettings" class="btn btn-secondary">
-                        ⚙️ Settings
+                        ⚙️ Manage API Key
                     </button>
                     <button id="clearCache" class="btn btn-secondary">
                         🗑️ Clear Cache
@@ -137,8 +103,14 @@
 
         <!-- Footer -->
         <div class="footer" id="panelFooter">
-            <div class="status-info">
-                <span id="connectionStatus">Checking connection...</span>
+            <div class="footer-content">
+                <div class="legal-links">
+                    <button id="privacyPolicyBtn" class="legal-btn" title="Privacy Policy">Privacy</button>
+                    <button id="termsOfServiceBtn" class="legal-btn" title="Terms of Service">Terms</button>
+                </div>
+                <div class="status-info">
+                    <span id="connectionStatus">Checking connection...</span>
+                </div>
             </div>
             <div class="resize-handle" id="resizeHandle" title="Drag to resize panel"></div>
         </div>

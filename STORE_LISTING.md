@@ -7,11 +7,10 @@
 Vibe Mind - AI Prompt Enhancer
 ```
 
-### Short Description (132 characters max)
+### Short Description
 ```
 Enhance prompts for V0, Magic Pattern & Lovable. Analyze images and text with AI to create better vibe coding prompts.
 ```
-(119 characters)
 
 ### Detailed Description
 
@@ -74,7 +73,7 @@ https://github.com/Douglasymlai/vibemind
 
 Need help? Found a bug? Have a feature request?
 • GitHub Issues: https://github.com/Douglasymlai/vibemind/issues
-• Email: [YOUR EMAIL]
+• Email: douglas.ym.lai@gmail.com
 
 ⚡ Get Started
 
@@ -100,18 +99,18 @@ Keywords: AI, prompt engineering, V0, Vercel, Magic Pattern, Lovable, OpenAI, vi
 
 ### Privacy Policy URL
 ```
-https://github.com/Douglasymlai/vibemind/blob/main/PRIVACY_POLICY.md
+https://www.vibemind.fun/privacy-policy
 ```
 (Or host on GitHub Pages for a cleaner URL)
 
 ### Homepage URL (Optional)
 ```
-https://github.com/Douglasymlai/vibemind
+https://www.vibemind.fun/
 ```
 
 ### Support URL (Optional)
 ```
-https://github.com/Douglasymlai/vibemind/issues
+https://www.vibemind.fun/
 ```
 
 ---
@@ -244,10 +243,9 @@ Requirements:
 ## Developer Account Info Needed
 
 When registering:
-- **Developer name:** [Your Name or Company]
-- **Developer email:** [Public-facing support email]
+- **Developer name:** Yueming Lai
+- **Developer email:** douglas.ym.lai@gmail.com
 - **Developer website:** https://github.com/Douglasymlai (or personal site)
-- **Payment for $5 fee:** Credit card required
 
 ---
 

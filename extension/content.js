@@ -47,20 +47,44 @@ class VibeMindContentScript {
         this.setupInputDetection();
     }
 
+    isExtensionContextValid() {
+        // Check if the extension runtime is still available
+        try {
+            // Try to access a runtime property
+            if (!chrome.runtime || !chrome.runtime.id) {
+                return false;
+            }
+            return true;
+        } catch (error) {
+            console.error('Extension context check failed:', error);
+            return false;
+        }
+    }
+
     loadLottieLibrary() {
+        // Check if extension context is valid
+        if (!this.isExtensionContextValid()) {
+            console.log('Extension context invalid, skipping Lottie library load');
+            return;
+        }
+
         // Check if Lottie is already loaded
         if (window.lottie) return;
 
-        // Load Lottie from local extension file
-        const script = document.createElement('script');
-        script.src = chrome.runtime.getURL('lottie.min.js');
-        script.onload = () => {
-            console.log('Lottie library loaded successfully');
-        };
-        script.onerror = () => {
-            console.warn('Failed to load Lottie library, using fallback animation');
-        };
-        document.head.appendChild(script);
+        try {
+            // Load Lottie from local extension file
+            const script = document.createElement('script');
+            script.src = chrome.runtime.getURL('lottie.min.js');
+            script.onload = () => {
+                console.log('Lottie library loaded successfully');
+            };
+            script.onerror = () => {
+                console.warn('Failed to load Lottie library, using fallback animation');
+            };
+            document.head.appendChild(script);
+        } catch (error) {
+            console.error('Failed to load Lottie library:', error);
+        }
     }
 
     injectEnhancementUI() {
@@ -121,6 +145,12 @@ class VibeMindContentScript {
     }
 
     showFloatingButton(inputElement, hasSelection = false) {
+        // Don't show button if extension context is invalid
+        if (!this.isExtensionContextValid()) {
+            console.log('Extension context invalid, not showing floating button');
+            return;
+        }
+
         this.activeInput = inputElement;
 
         // Remove existing floating button
@@ -211,6 +241,44 @@ class VibeMindContentScript {
         return this.dialog && this.dialog.style.display !== 'none';
     }
 
+    detectDarkMode() {
+        // Check for dark mode in multiple ways
+        // 1. Check if the page has a dark theme class or attribute
+        if (document.documentElement.classList.contains('dark') || 
+            document.documentElement.getAttribute('data-theme') === 'dark' ||
+            document.documentElement.getAttribute('data-color-mode') === 'dark') {
+            return true;
+        }
+
+        // 2. Check for dark mode in body or html
+        if (document.body.classList.contains('dark') || 
+            document.body.getAttribute('data-theme') === 'dark') {
+            return true;
+        }
+
+        // 3. Check CSS media query
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return true;
+        }
+
+        // 4. Check for common dark mode indicators
+        const computedStyle = window.getComputedStyle(document.documentElement);
+        const backgroundColor = computedStyle.backgroundColor;
+        
+        // If background is dark (low brightness), assume dark mode
+        if (backgroundColor && backgroundColor !== 'rgba(0, 0, 0, 0)') {
+            const rgb = backgroundColor.match(/\d+/g);
+            if (rgb && rgb.length >= 3) {
+                const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
+                if (brightness < 128) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     showEnhancementDialog() {
         this.hideFloatingButton();
         this.createDialog();
@@ -221,6 +289,9 @@ class VibeMindContentScript {
         if (this.dialog) {
             this.dialog.remove();
         }
+
+        // Detect dark mode
+        const isDarkMode = this.detectDarkMode();
 
         // Create overlay
         this.overlay = document.createElement('div');
@@ -242,6 +313,11 @@ class VibeMindContentScript {
         this.dialog = document.createElement('div');
         this.dialog.className = 'vibe-mind-dialog';
         this.dialog.innerHTML = this.getDialogHTML();
+        
+        // Apply dark mode theme
+        if (isDarkMode) {
+            this.dialog.setAttribute('data-theme', 'dark');
+        }
 
         Object.assign(this.dialog.style, {
             position: 'fixed',
@@ -342,7 +418,9 @@ class VibeMindContentScript {
             </div>
             
             <div class="vibe-mind-loading" id="loadingState" style="display: none;">
-                <div class="loading-lottie" id="loadingLottie"></div>
+                <div class="gif-container">
+                    <img src="${chrome.runtime.getURL('icons/loading.gif')}" alt="Loading..." class="loading-gif">
+                </div>
             </div>
             
             <div class="vibe-mind-result" id="resultState" style="display: none;">
@@ -468,9 +546,31 @@ class VibeMindContentScript {
         const selectedRole = this.dialog.querySelector('input[name="role"]:checked').value;
         const inputText = this.getInputText(this.activeInput);
 
-        // Get API key
-        const result = await chrome.storage.local.get(['openai_api_key']);
-        if (!result.openai_api_key) {
+        // Check if extension context is still valid
+        if (!this.isExtensionContextValid()) {
+            this.showNotification('Extension was reloaded. Please refresh this page to continue.', 'error');
+            this.hideDialog();
+            return;
+        }
+
+        // Get API key from background script
+        let apiKey;
+        try {
+            const response = await chrome.runtime.sendMessage({ type: 'get-api-key' });
+            apiKey = response?.apiKey;
+        } catch (error) {
+            console.error('Failed to get API key:', error);
+            // Check if this is the context invalidation error
+            if (error.message && error.message.includes('Extension context invalidated')) {
+                this.showNotification('Extension was reloaded. Please refresh this page to continue.', 'error');
+            } else {
+                this.showNotification('Failed to communicate with extension. Please try again.', 'error');
+            }
+            this.hideDialog();
+            return;
+        }
+
+        if (!apiKey) {
             this.showNotification('Please set your OpenAI API key in the extension popup first', 'error');
             return;
         }
@@ -487,7 +587,7 @@ class VibeMindContentScript {
                 formData.append('file', this.uploadedFile);
                 formData.append('message', inputText || 'Analyze this image and create a detailed design prompt');
                 formData.append('profile_key', selectedRole);
-                formData.append('api_key', result.openai_api_key);
+                formData.append('api_key', apiKey);
 
                 response = await fetch(`${API_BASE_URL}/analyze-upload`, {
                     method: 'POST',
@@ -503,7 +603,7 @@ class VibeMindContentScript {
                     body: JSON.stringify({
                         message: inputText || 'Create a detailed design prompt',
                         profile_key: selectedRole,
-                        api_key: result.openai_api_key
+                        api_key: apiKey
                     }),
                 });
             }
@@ -527,33 +627,8 @@ class VibeMindContentScript {
     }
 
     async loadAnimationData() {
-        if (this.animationData) return;
-
-        try {
-            // Load from extension's local copy
-            const response = await fetch(chrome.runtime.getURL('loading.json'));
-            if (response.ok) {
-                this.animationData = await response.json();
-                console.log('Loaded loading.json animation data successfully');
-                return;
-            }
-        } catch (error) {
-            console.log('Could not load local loading.json, trying fallback');
-        }
-
-        try {
-            // Fallback: try to load from frontend (if running)
-            const response = await fetch(`${FRONTEND_URL}/loading.json`);
-            if (response.ok) {
-                this.animationData = await response.json();
-                console.log('Loaded loading.json from localhost fallback');
-                return;
-            }
-        } catch (error) {
-            console.log('Could not load loading.json, using fallback');
-            // Use a simple fallback animation data if the file is not available
-            this.animationData = null;
-        }
+        // No need to load animation data for GIF
+        return;
     }
 
     async showLoadingState() {
@@ -562,12 +637,11 @@ class VibeMindContentScript {
         this.dialog.querySelector('#loadingState').style.display = 'flex';
         this.dialog.querySelector('#resultState').style.display = 'none';
 
-        // Load and start Lottie animation
-        await this.loadAnimationData();
-        this.startLottieAnimation();
+        // Start GIF animation
+        this.startGifAnimation();
     }
 
-    startLottieAnimation() {
+    startGifAnimation() {
         const lottieContainer = this.dialog.querySelector('#loadingLottie');
         if (!lottieContainer) return;
 
@@ -577,24 +651,41 @@ class VibeMindContentScript {
             this.lottieAnimation = null;
         }
 
-        if (this.animationData && window.lottie) {
-            // Use Lottie animation from loading.json
-            console.log('Starting Lottie animation with loading.json data');
-            this.lottieAnimation = window.lottie.loadAnimation({
-                container: lottieContainer,
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                animationData: this.animationData
-            });
-        } else {
-            // Fallback to CSS animation if loading.json or lottie library not available
-            console.log('Using fallback CSS animation - loading.json or lottie library not available');
-            lottieContainer.innerHTML = '<div class="loading-fallback">Generating...</div>';
+        // Use GIF animation
+        console.log('Starting GIF animation');
+        
+        // Check if extension context is valid
+        if (!this.isExtensionContextValid()) {
+            console.log('Extension context invalid, using fallback loading indicator');
+            lottieContainer.innerHTML = `
+                <div class="gif-container">
+                    <div style="text-align: center">
+                        <div style="font-size: 48px; animation: spin 1s linear infinite;">⏳</div>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        try {
+            lottieContainer.innerHTML = `
+                <div class="gif-container">
+                    <img src="${chrome.runtime.getURL('icons/loading.gif')}" alt="Loading..." class="loading-gif">
+                </div>
+            `;
+        } catch (error) {
+            console.error('Failed to load GIF animation:', error);
+            lottieContainer.innerHTML = `
+                <div class="gif-container">
+                    <div style="text-align: center">
+                        <div style="font-size: 48px; animation: spin 1s linear infinite;">⏳</div>
+                    </div>
+                </div>
+            `;
         }
     }
 
-    stopLottieAnimation() {
+    stopGifAnimation() {
         if (this.lottieAnimation) {
             this.lottieAnimation.destroy();
             this.lottieAnimation = null;
@@ -602,7 +693,7 @@ class VibeMindContentScript {
     }
 
     showResult(enhancedPrompt) {
-        this.stopLottieAnimation();
+        this.stopGifAnimation();
         this.dialog.querySelector('.vibe-mind-dialog-content').style.display = 'none';
         this.dialog.querySelector('.vibe-mind-dialog-footer').style.display = 'none';
         this.dialog.querySelector('#loadingState').style.display = 'none';
@@ -613,7 +704,7 @@ class VibeMindContentScript {
     }
 
     showMainContent() {
-        this.stopLottieAnimation();
+        this.stopGifAnimation();
         this.dialog.querySelector('.vibe-mind-dialog-content').style.display = 'block';
         this.dialog.querySelector('.vibe-mind-dialog-footer').style.display = 'flex';
         this.dialog.querySelector('#loadingState').style.display = 'none';
@@ -640,22 +731,47 @@ class VibeMindContentScript {
 
     applyToInput() {
         if (this.activeInput && this.enhancedResult) {
-            this.setInputText(this.activeInput, this.enhancedResult);
-            this.hideDialog();
-            this.showNotification('Enhanced prompt applied successfully!', 'success');
+            try {
+                this.setInputText(this.activeInput, this.enhancedResult);
+                this.hideDialog();
+                this.showNotification('Enhanced prompt applied successfully!', 'success');
+            } catch (error) {
+                console.error('Failed to apply to input:', error);
+                this.showNotification('Failed to apply to input field. Please try again.', 'error');
+            }
+        } else {
+            console.error('No active input or enhanced result available');
+            this.showNotification('No input field found. Please try again.', 'error');
         }
     }
 
     setInputText(element, text) {
+        console.log('Setting input text for element:', element, 'with text:', text);
+        
         if (element.tagName === 'TEXTAREA' || element.tagName === 'INPUT') {
             element.value = text;
             // Trigger input event to notify frameworks
             element.dispatchEvent(new Event('input', { bubbles: true }));
             element.dispatchEvent(new Event('change', { bubbles: true }));
-        } else if (element.contentEditable === 'true') {
+            console.log('Set value for input/textarea:', element.value);
+        } else if (element.contentEditable === 'true' || element.hasAttribute('contenteditable')) {
             element.textContent = text;
+            element.innerHTML = text; // Also set innerHTML for rich text editors
             // Trigger input event
             element.dispatchEvent(new Event('input', { bubbles: true }));
+            element.dispatchEvent(new Event('change', { bubbles: true }));
+            console.log('Set content for contenteditable:', element.textContent);
+        } else {
+            console.warn('Unknown input element type:', element.tagName, element);
+            // Try to set value anyway
+            if ('value' in element) {
+                element.value = text;
+                element.dispatchEvent(new Event('input', { bubbles: true }));
+                element.dispatchEvent(new Event('change', { bubbles: true }));
+            } else {
+                element.textContent = text;
+                element.dispatchEvent(new Event('input', { bubbles: true }));
+            }
         }
     }
 
@@ -670,7 +786,7 @@ class VibeMindContentScript {
 
     hideDialog() {
         if (this.overlay && this.dialog) {
-            this.stopLottieAnimation();
+            this.stopGifAnimation();
             this.overlay.style.opacity = '0';
             this.dialog.style.opacity = '0';
             this.dialog.style.transform = 'translate(-50%, -50%) scale(0.9)';

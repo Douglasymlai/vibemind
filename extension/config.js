@@ -9,7 +9,7 @@ const CONFIG = {
     API_ROOT_URL: 'https://vibemind-production.up.railway.app',
 
     // Frontend app URL (if you deploy the React frontend separately)
-    FRONTEND_URL: 'http://localhost:3000',
+    // FRONTEND_URL: 'http://localhost:3000',
 
     // For local development, uncomment these:
     // API_BASE_URL: 'http://localhost:8000/api',
