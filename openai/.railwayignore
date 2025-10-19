@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*"$py".class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Environment files (secrets should be set in Railway dashboard)
+.env
+.env.local
+
+# Output files (exclude generated handoffs, but keep profiles and handoff templates)
+output/
+test_handoff_*.json
+design_handoff_*.json
+
+# Test files
+test_*.py
+*_test.py
+
+# Documentation (exclude docs but keep README for Railway)
+*.mdx
+design_prompt_*.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Images (except those needed for profiles/handoff)
+*.png
+*.jpg
+*.jpeg

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe Mind</title>
     <link rel="stylesheet" href="sidepanel.css">
 </head>
+
 <body>
     <div class="sidepanel-container">
         <!-- Collapsible Header -->
@@ -34,17 +36,13 @@
                 </div>
                 <div class="section-content">
                     <div class="input-group">
-                        <input 
-                            type="password" 
-                            id="apiKeyInput" 
-                            placeholder="sk-..." 
-                            class="api-key-input"
-                        >
+                        <input type="password" id="apiKeyInput" placeholder="sk-..." class="api-key-input">
                         <button id="toggleApiKey" class="toggle-btn" title="Show/Hide API Key">👁️</button>
                     </div>
                     <button id="saveApiKey" class="btn btn-primary">Save & Validate</button>
                     <div class="help-text">
-                        <small>Get your API key from <a href="https://platform.openai.com" target="_blank">platform.openai.com</a></small>
+                        <small>Get your API key from <a href="https://platform.openai.com"
+                                target="_blank">platform.openai.com</a></small>
                     </div>
                 </div>
             </div>
@@ -64,7 +62,7 @@
                                 <div class="feature-desc">AI-powered prompt enhancement</div>
                             </div>
                         </button>
-                        
+
                         <button id="analyzeImage" class="feature-btn">
                             <div class="feature-icon">🖼️</div>
                             <div class="feature-text">
@@ -72,7 +70,7 @@
                                 <div class="feature-desc">Extract design insights from images</div>
                             </div>
                         </button>
-                        
+
                         <button id="openFullApp" class="feature-btn">
                             <div class="feature-icon">🚀</div>
                             <div class="feature-text">
@@ -146,6 +144,8 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script src="sidepanel.js"></script>
 </body>
+
 </html>

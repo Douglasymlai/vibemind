@@ -1,6 +1,18 @@
 // Sidepanel script for Vibe Mind Chrome Extension
 
-const API_BASE_URL = 'http://localhost:8000/api';
+// Load config
+let API_BASE_URL = 'https://vibemind-production.up.railway.app/api';
+let FRONTEND_URL = 'http://localhost:3000';
+
+// Try to load from config.js if available
+try {
+    if (typeof CONFIG !== 'undefined') {
+        API_BASE_URL = CONFIG.API_BASE_URL;
+        FRONTEND_URL = CONFIG.FRONTEND_URL;
+    }
+} catch (e) {
+    console.log('Using default config');
+}
 
 class SidePanelManager {
     constructor() {
@@ -23,7 +35,7 @@ class SidePanelManager {
     setupEventListeners() {
         // Panel collapse/expand
         document.getElementById('collapseBtn').addEventListener('click', this.toggleCollapse.bind(this));
-        
+
         // Section toggles
         document.querySelectorAll('.section-toggle').forEach(toggle => {
             toggle.addEventListener('click', this.toggleSection.bind(this));
@@ -53,12 +65,12 @@ class SidePanelManager {
         document.getElementById('enhancePrompt').addEventListener('click', this.enhancePrompt.bind(this));
         document.getElementById('analyzeImage').addEventListener('click', this.analyzeImage.bind(this));
         document.getElementById('openFullApp').addEventListener('click', this.openFullApp.bind(this));
-        
+
         // Quick actions
         document.getElementById('copyToClipboard').addEventListener('click', this.copyToClipboard.bind(this));
         document.getElementById('openSettings').addEventListener('click', this.openSettings.bind(this));
         document.getElementById('clearCache').addEventListener('click', this.clearCache.bind(this));
-        
+
         // Error handling
         document.getElementById('retryBtn').addEventListener('click', this.retry.bind(this));
 
@@ -89,10 +101,10 @@ class SidePanelManager {
 
         const handleResize = (e) => {
             if (!isResizing) return;
-            
+
             const deltaX = startX - e.clientX; // Reverse direction for right-side panel
             const newWidth = Math.max(this.minWidth, Math.min(this.maxWidth, startWidth + deltaX));
-            
+
             this.currentWidth = newWidth;
             document.body.style.width = `${newWidth}px`;
         };
@@ -112,13 +124,13 @@ class SidePanelManager {
             e.preventDefault();
             this.enhancePrompt();
         }
-        
+
         // Ctrl/Cmd + I: Analyze image
         if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
             e.preventDefault();
             this.analyzeImage();
         }
-        
+
         // Ctrl/Cmd + [: Toggle collapse
         if ((e.ctrlKey || e.metaKey) && e.key === '[') {
             e.preventDefault();
@@ -129,10 +141,10 @@ class SidePanelManager {
     toggleCollapse() {
         const container = document.querySelector('.sidepanel-container');
         const collapseIcon = document.querySelector('.collapse-icon');
-        
+
         this.isCollapsed = !this.isCollapsed;
         container.classList.toggle('collapsed', this.isCollapsed);
-        
+
         // Save state
         this.saveSettings();
     }
@@ -142,7 +154,7 @@ class SidePanelManager {
         const toggle = e.target;
         const targetId = toggle.getAttribute('data-target');
         const targetSection = document.getElementById(targetId);
-        
+
         if (targetSection) {
             const isCollapsed = targetSection.classList.contains('collapsed');
             targetSection.classList.toggle('collapsed', !isCollapsed);
@@ -153,7 +165,7 @@ class SidePanelManager {
     toggleApiKeyVisibility() {
         const input = document.getElementById('apiKeyInput');
         const toggleBtn = document.getElementById('toggleApiKey');
-        
+
         if (input.type === 'password') {
             input.type = 'text';
             toggleBtn.textContent = '🙈';
@@ -196,15 +208,15 @@ class SidePanelManager {
             if (response.ok) {
                 // Store API key
                 await chrome.storage.local.set({ openai_api_key: apiKey });
-                
+
                 // Update UI
                 this.updateApiKeyStatus(true);
                 this.showMainSection();
-                
+
                 // Show success message briefly
                 saveBtn.textContent = '✅ Saved';
                 this.showProgress(1.0);
-                
+
                 setTimeout(() => {
                     saveBtn.textContent = 'Save & Validate';
                     this.hideProgress();
@@ -228,9 +240,9 @@ class SidePanelManager {
     async checkApiKeyStatus() {
         const result = await chrome.storage.local.get(['openai_api_key']);
         const hasApiKey = !!result.openai_api_key;
-        
+
         this.updateApiKeyStatus(hasApiKey);
-        
+
         if (hasApiKey) {
             document.getElementById('apiKeyInput').value = result.openai_api_key;
             this.showMainSection();
@@ -242,7 +254,7 @@ class SidePanelManager {
     updateApiKeyStatus(connected) {
         const statusIndicator = document.getElementById('statusIndicator');
         const statusText = document.getElementById('statusText');
-        
+
         if (connected) {
             statusIndicator.classList.add('connected');
             statusText.textContent = 'API Key Set';
@@ -254,17 +266,17 @@ class SidePanelManager {
 
     async checkBackendConnection() {
         const connectionStatus = document.getElementById('connectionStatus');
-        
+
         try {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 5000);
-            
+
             const response = await fetch(`${API_BASE_URL}/health`, {
                 signal: controller.signal
             });
-            
+
             clearTimeout(timeoutId);
-            
+
             if (response.ok) {
                 connectionStatus.textContent = 'Backend connected';
                 connectionStatus.style.color = '#10b981';
@@ -336,7 +348,7 @@ class SidePanelManager {
         try {
             // Get selected text from current tab
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-            
+
             const results = await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 function: () => {
@@ -346,7 +358,7 @@ class SidePanelManager {
             });
 
             const selectedText = results[0]?.result || '';
-            
+
             if (!selectedText.trim()) {
                 this.showError('Please select some text or focus on a text input first');
                 return;
@@ -395,7 +407,7 @@ class SidePanelManager {
             // Show success and return to main
             this.showMainSection();
             document.getElementById('copyToClipboard').disabled = false;
-            
+
             // Show temporary success message
             this.showTemporarySuccess('enhancePrompt', 'Enhanced & Copied!', 'Prompt ready to use');
 
@@ -413,7 +425,7 @@ class SidePanelManager {
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = 'image/*';
-            
+
             input.onchange = async (event) => {
                 const file = event.target.files[0];
                 if (!file) return;
@@ -480,7 +492,7 @@ class SidePanelManager {
     }
 
     async openFullApp() {
-        chrome.tabs.create({ url: 'http://localhost:3000' });
+        chrome.tabs.create({ url: FRONTEND_URL });
     }
 
     async copyToClipboard() {
@@ -488,12 +500,12 @@ class SidePanelManager {
             const result = await chrome.storage.local.get(['last_result']);
             if (result.last_result) {
                 await navigator.clipboard.writeText(result.last_result);
-                
+
                 // Show success feedback
                 const copyBtn = document.getElementById('copyToClipboard');
                 const originalText = copyBtn.textContent;
                 copyBtn.textContent = '✅ Copied!';
-                
+
                 setTimeout(() => {
                     copyBtn.textContent = originalText;
                 }, 2000);
@@ -512,16 +524,16 @@ class SidePanelManager {
             await chrome.storage.local.clear();
             this.recentResults = [];
             this.updateRecentResults();
-            
+
             // Show success feedback
             const clearBtn = document.getElementById('clearCache');
             const originalText = clearBtn.textContent;
             clearBtn.textContent = '✅ Cleared!';
-            
+
             setTimeout(() => {
                 clearBtn.textContent = originalText;
             }, 2000);
-            
+
             // Reset to API key section
             this.showApiKeySection();
         } catch (error) {
@@ -536,7 +548,7 @@ class SidePanelManager {
     showTemporarySuccess(elementId, title, desc) {
         const element = document.getElementById(elementId);
         const originalHTML = element.innerHTML;
-        
+
         element.innerHTML = `
             <div class="feature-icon">✅</div>
             <div class="feature-text">
@@ -544,7 +556,7 @@ class SidePanelManager {
                 <div class="feature-desc">${desc}</div>
             </div>
         `;
-        
+
         setTimeout(() => {
             element.innerHTML = originalHTML;
         }, 3000);
@@ -565,7 +577,7 @@ class SidePanelManager {
         }
 
         // Store in Chrome storage
-        await chrome.storage.local.set({ 
+        await chrome.storage.local.set({
             last_result: result,
             recent_results: this.recentResults
         });
@@ -587,7 +599,7 @@ class SidePanelManager {
 
     updateRecentResults() {
         const resultsList = document.getElementById('recentResultsList');
-        
+
         if (this.recentResults.length === 0) {
             resultsList.innerHTML = '<p class="no-results">No recent results</p>';
             return;
@@ -607,7 +619,7 @@ class SidePanelManager {
                 const result = this.recentResults.find(r => r.id === resultId);
                 if (result) {
                     await navigator.clipboard.writeText(result.content);
-                    
+
                     // Visual feedback
                     item.style.background = 'rgba(102, 126, 234, 0.2)';
                     setTimeout(() => {
@@ -625,12 +637,12 @@ class SidePanelManager {
                 const settings = result.sidepanel_settings;
                 this.isCollapsed = settings.isCollapsed || false;
                 this.currentWidth = settings.width || 400;
-                
+
                 // Apply settings
                 if (this.isCollapsed) {
                     document.querySelector('.sidepanel-container').classList.add('collapsed');
                 }
-                
+
                 document.body.style.width = `${this.currentWidth}px`;
             }
         } catch (error) {
